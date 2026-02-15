@@ -44,4 +44,4 @@ to discuss what you would like to change.
 
 ## License
 
-This project is under [MIT license](https://choosealicense.com/licenses/mit/). Please familiarize yourself with [license file](LICENCE) for more information.
+This project is under [MIT license](https://choosealicense.com/licenses/mit/). Please familiarize yourself with [license file](LICENSE.md) for more information.
