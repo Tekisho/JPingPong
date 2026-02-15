@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root id="root" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" type="StackPane" xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1">
+        <Pane fx:id="gameSpace" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+        <VBox id="game-interface" alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+            <HBox>
+                <Label fx:id="playerOneLabel" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0">Player L</Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="gameScoreLabel">Score: X|X</Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="playerTwoLabel" alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0">Player R</Label>
+            </HBox>
+            <Button id="settings-button" fx:id="settingsButton" focusTraversable="false" graphicTextGap="0.0" mnemonicParsing="false" styleClass="image-button" />
+        </VBox>
+         <BorderPane id="game-end-screen" fx:id="gameEndScreen" visible="false">
+            <center>
+                <VBox alignment="CENTER" spacing="12.5" BorderPane.alignment="CENTER">
+                    <HBox alignment="CENTER" spacing="12.5">
+                        <Label fx:id="winnerLabel" text="[Player NAME]" />
+                        <Label styleClass="header-label" text="is A WINNER" />
+                    </HBox>
+                    <Button id="restart-game-button" fx:id="restartGameButton" focusTraversable="false" mnemonicParsing="false" styleClass="image-button" />
+                </VBox>
+            </center>
+        </BorderPane>
+</fx:root>
