@@ -85,7 +85,7 @@ public class GameView extends StackPane implements Initializable {
         delegate.handleSetInitialSize();
         delegate.handleResetGameObjectPositions();
 
-        // FIXME: finish scene resizing impl.
+        // TODO: try to find a better way to bind width & height properties to not make redundant operations.
         gameSpace.widthProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(newValue.doubleValue(), getHeight()));
         gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(getWidth(), newValue.doubleValue()));
 

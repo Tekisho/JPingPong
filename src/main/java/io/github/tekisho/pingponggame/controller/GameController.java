@@ -29,13 +29,33 @@ public class GameController implements GameViewDelegate, Observer {
         gameView.setPrefSize(GameModel.DEFAULT_GAME_SPACE_WIDTH, GameModel.DEFAULT_GAME_SPACE_HEIGHT);
     }
 
-    // TODO: Implement components repositioning / scaling, during gameSpace resize.
     @Override
     public void handleSceneResize(double w, double h) {
         // find offset / relative position
+        double oldWidth = gameModel.getGameSpaceWidth();
+        double oldHeight = gameModel.getGameSpaceHeight();
+
+        double racketOneRelY = gameModel.getPlayerOneModel().getRacketModel().getCenterY() / oldHeight;
+        double racketTwoRelY = gameModel.getPlayerTwoModel().getRacketModel().getCenterY() / oldHeight;
+
+        double ballRelX = gameModel.getBallModel().getCenterX() / oldWidth;
+        double ballRelY = gameModel.getBallModel().getCenterY() / oldHeight;
 
         gameModel.updateGameSpaceSize(w, h);
-        // subtract offset / relative position from new gameSpace width
+
+        // subtract offset / multiply relative position with new gameSpace width
+        gameModel.getPlayerOneModel().getRacketModel().updatePositionWithCentering(
+                gameModel.getPlayerOneModel().getRacketModel().getCenterX(),
+                racketOneRelY * gameModel.getGameSpaceHeight()
+        );
+        gameModel.getPlayerTwoModel().getRacketModel().updatePositionWithCentering(
+                gameModel.getGameSpaceWidth() - (oldWidth - gameModel.getPlayerTwoModel().getRacketModel().getCenterX()),
+                racketTwoRelY * gameModel.getGameSpaceHeight()
+        );
+        gameModel.getBallModel().updatePositionWithCentering(
+                ballRelX * gameModel.getGameSpaceWidth(),
+                ballRelY * gameModel.getGameSpaceHeight()
+        );
 
         gameModel.notifyAllObservers();
     }
