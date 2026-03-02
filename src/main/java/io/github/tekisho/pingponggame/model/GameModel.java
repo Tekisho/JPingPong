@@ -1,9 +1,14 @@
 package io.github.tekisho.pingponggame.model;
 
+import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-// TODO: add method for starting game-loop.
 public class GameModel implements Subject {
     // WSVGA resolution (128:75)
     public static final double DEFAULT_GAME_SPACE_WIDTH = 1024;
@@ -22,6 +27,9 @@ public class GameModel implements Subject {
     private final BallModel ballModel;
 
     private PlayerModel winnerPlayer;
+
+    private AnimationTimer gameLoop;
+    private GameInputHandler gameInputHandler;
 
     public GameModel() {
         playerOneModel = new PlayerModel("Player 1");
@@ -47,6 +55,65 @@ public class GameModel implements Subject {
     }
 
     // Business Logic (aka game loop related)
+    class GameInputHandler implements EventHandler<KeyEvent> {
+        private final Set<KeyCode> activeKeys = new HashSet<>();
+
+        @Override
+        public void handle(KeyEvent keyEvent) {
+            if (KeyEvent.KEY_PRESSED.equals(keyEvent.getEventType()) ) {
+                activeKeys.add(keyEvent.getCode());
+            } else if (KeyEvent.KEY_RELEASED.equals(keyEvent.getEventType())) {
+                activeKeys.remove(keyEvent.getCode());
+            }
+        }
+
+        public Set<KeyCode> getActiveKeys() {
+            return Collections.unmodifiableSet(activeKeys);
+        }
+    }
+    public void createGameLoop() {
+        if (gameLoop == null) {
+            gameInputHandler = new GameInputHandler();
+
+            gameLoop = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    updateGame(now, gameInputHandler.getActiveKeys());
+//                if (gameState.isGameOver()) {
+//                    this.stop();
+//                }
+                    notifyAllObservers();
+                }
+            };
+        }
+    }
+
+    public void startGameLoop() {
+        gameLoop.start();
+    }
+    public void stopGameLoop() {
+        gameLoop.stop();
+    }
+
+    public GameInputHandler getGameInputHandler() {
+        return gameInputHandler;
+    }
+
+    private void updateGame (long now, Set<KeyCode> activeKeys) {
+        updatePlayerOneRacket(activeKeys);
+    }
+    private void updatePlayerOneRacket(Set<KeyCode> activeKeys) {
+        final double currentX = playerOneModel.getRacketModel().getX();
+        final double currentY = playerOneModel.getRacketModel().getY();
+
+        if (!((activeKeys.contains(KeyCode.UP) || activeKeys.contains(KeyCode.W)) && (activeKeys.contains(KeyCode.DOWN) || activeKeys.contains(KeyCode.S)))) {
+            if (activeKeys.contains(KeyCode.UP) || activeKeys.contains(KeyCode.W))
+                playerOneModel.getRacketModel().move(currentX, currentY - playerOneModel.getRacketModel().getVelocity(), gameSpaceHeight);
+            else if (activeKeys.contains(KeyCode.DOWN) || activeKeys.contains(KeyCode.S))
+                playerOneModel.getRacketModel().move(currentX, currentY + playerOneModel.getRacketModel().getVelocity(), gameSpaceHeight);
+        }
+    }
+
     public void updateGameSpaceSize(double gameSpaceWidth, double gameSpaceHeight) {
         this.gameSpaceWidth = gameSpaceWidth;
         this.gameSpaceHeight = gameSpaceHeight;

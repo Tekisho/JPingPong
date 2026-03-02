@@ -11,7 +11,7 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
 
     private double velocity;
 
-    protected static final Color DEFAULT_FILL_COLOR = Color.rgb(255, 255, 255, 0.75);
+    protected static final Color DEFAULT_FILL_COLOR = Color.rgb(245, 245, 245, 0.95);
     private Color color;
 
     protected GameObjectModel(double width, double height, double velocity) {
@@ -22,6 +22,19 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
         this.height = height;
         this.velocity = velocity;
         this.color = color;
+    }
+
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
+    public double getCenterX() {
+        return x + (width / 2);
+    }
+    public double getCenterY() {
+        return y + (height / 2);
     }
 
     public void updatePosition(double x, double y) {
@@ -36,17 +49,20 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
     public void updatePositionWithCentering(double xCenter, double yCenter) {
         updatePosition(xCenter - (width / 2), yCenter - (height / 2));
     }
-    public double getX() {
-        return x;
-    }
-    public double getY() {
-        return y;
-    }
-    public double getCenterX() {
-        return x + (width / 2);
-    }
-    public double getCenterY() {
-        return y + (height / 2);
+
+    // TODO: Modify to properly consider velocity & delta time
+    /**
+     * Updates position (without centering) according to the game rules
+     * @param x
+     * @param y
+     */
+    public void move(double x, double y, double heightBoundary) {
+        if (y <= 0)
+            updatePosition(x, 0);
+        else if (y + height >= heightBoundary)
+            updatePosition(x, heightBoundary - height);
+        else
+            updatePosition(x, y);
     }
 
     /**

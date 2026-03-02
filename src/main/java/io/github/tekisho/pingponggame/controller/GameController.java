@@ -3,6 +3,7 @@ package io.github.tekisho.pingponggame.controller;
 import io.github.tekisho.pingponggame.model.*;
 import io.github.tekisho.pingponggame.view.GameView;
 import io.github.tekisho.pingponggame.view.delegate.GameViewDelegate;
+import javafx.scene.Scene;
 
 public class GameController implements GameViewDelegate, Observer {
     private final GameModel gameModel;
@@ -31,30 +32,29 @@ public class GameController implements GameViewDelegate, Observer {
 
     @Override
     public void handleSceneResize(double w, double h) {
-        // find offset / relative position
+        // Old width and/or height is required to find relative position in available moving space (aka H/W - obj h/w)
         double oldWidth = gameModel.getGameSpaceWidth();
         double oldHeight = gameModel.getGameSpaceHeight();
 
-        double racketOneRelY = gameModel.getPlayerOneModel().getRacketModel().getCenterY() / oldHeight;
-        double racketTwoRelY = gameModel.getPlayerTwoModel().getRacketModel().getCenterY() / oldHeight;
+        double racketOneRelY = gameModel.getPlayerOneModel().getRacketModel().getY() / (oldHeight - gameModel.getPlayerOneModel().getRacketModel().getHeight());
+        double racketTwoRelY = gameModel.getPlayerTwoModel().getRacketModel().getY() / (oldHeight - gameModel.getPlayerTwoModel().getRacketModel().getHeight());
 
-        double ballRelX = gameModel.getBallModel().getCenterX() / oldWidth;
-        double ballRelY = gameModel.getBallModel().getCenterY() / oldHeight;
+        double ballRelX = gameModel.getBallModel().getX() / (oldWidth - gameModel.getBallModel().getWidth());
+        double ballRelY = gameModel.getBallModel().getY() / (oldHeight - gameModel.getBallModel().getHeight());
 
         gameModel.updateGameSpaceSize(w, h);
 
-        // subtract offset / multiply relative position with new gameSpace width
-        gameModel.getPlayerOneModel().getRacketModel().updatePositionWithCentering(
-                gameModel.getPlayerOneModel().getRacketModel().getCenterX(),
-                racketOneRelY * gameModel.getGameSpaceHeight()
+        gameModel.getPlayerOneModel().getRacketModel().updatePosition(
+                gameModel.getPlayerOneModel().getRacketModel().getX(),
+                racketOneRelY * (gameModel.getGameSpaceHeight() - gameModel.getPlayerOneModel().getRacketModel().getHeight())
         );
-        gameModel.getPlayerTwoModel().getRacketModel().updatePositionWithCentering(
-                gameModel.getGameSpaceWidth() - (oldWidth - gameModel.getPlayerTwoModel().getRacketModel().getCenterX()),
-                racketTwoRelY * gameModel.getGameSpaceHeight()
+        gameModel.getPlayerTwoModel().getRacketModel().updatePosition(
+                gameModel.getGameSpaceWidth() - (oldWidth - gameModel.getPlayerTwoModel().getRacketModel().getX()),
+                racketTwoRelY * (gameModel.getGameSpaceHeight() - gameModel.getPlayerTwoModel().getRacketModel().getHeight())
         );
-        gameModel.getBallModel().updatePositionWithCentering(
-                ballRelX * gameModel.getGameSpaceWidth(),
-                ballRelY * gameModel.getGameSpaceHeight()
+        gameModel.getBallModel().updatePosition(
+                ballRelX * (gameModel.getGameSpaceWidth() - gameModel.getBallModel().getWidth()),
+                ballRelY * (gameModel.getGameSpaceHeight() - gameModel.getBallModel().getHeight())
         );
 
         gameModel.notifyAllObservers();
@@ -78,6 +78,21 @@ public class GameController implements GameViewDelegate, Observer {
         handleResetGameObjectPositions();
 
         gameView.toggleGameEndScreen();
+    }
+
+    /**
+     * Starting up the game
+     */
+    @Override
+    public void handleStartGame() {
+        Scene gameScene = gameView.getScene();
+
+        gameModel.createGameLoop();
+
+        gameScene.setOnKeyPressed(gameModel.getGameInputHandler());
+        gameScene.setOnKeyReleased(gameModel.getGameInputHandler());
+
+        gameModel.startGameLoop();
     }
 
     @Override

@@ -89,8 +89,12 @@ public class GameView extends StackPane implements Initializable {
         gameSpace.widthProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(newValue.doubleValue(), getHeight()));
         gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(getWidth(), newValue.doubleValue()));
 
-        settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleSettingsButtonClick());
+        sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null)
+                delegate.handleStartGame();
+        });
 
+        settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleSettingsButtonClick());
         restartGameButton.setOnMouseClicked(mouseEvent -> delegate.handleResetGame());
     }
 

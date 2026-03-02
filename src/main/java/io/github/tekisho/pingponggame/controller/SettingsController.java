@@ -41,6 +41,18 @@ public class SettingsController implements SettingsViewDelegate, Observer {
     }
 
     @Override
+    public void handlePauseAndRestartGame() {
+        settingsView.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != newValue) {
+                newValue.windowProperty().addListener((observable1, oldValue1, newValue1) -> {
+                    newValue1.setOnShowing((windowEvent -> gameModel.stopGameLoop()));
+                    newValue1.setOnCloseRequest((windowEvent -> gameModel.startGameLoop()));
+                });
+            }
+        });
+    }
+
+    @Override
     public void update() {
         updatePlayersAndEndGameScore();
         updateRackets();

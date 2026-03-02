@@ -10,4 +10,6 @@ public interface GameViewDelegate {
     void  handleResetGame();
 
     void handleSettingsButtonClick();
+
+    void handleStartGame();
 }

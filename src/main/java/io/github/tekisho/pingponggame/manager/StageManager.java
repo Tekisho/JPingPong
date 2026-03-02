@@ -52,4 +52,8 @@ public class StageManager {
     public void showSecondaryStage() {
         secondaryStage.show();
     }
+
+    public Scene getPrimaryScene() {
+        return primaryStage.getScene();
+    }
 }

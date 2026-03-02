@@ -6,7 +6,7 @@ import io.github.tekisho.pingponggame.view.GameView;
 import io.github.tekisho.pingponggame.view.SettingsView;
 import javafx.stage.Stage;
 
-// TODO: add proper logging; add unit-tests (at least for StageManager .initStages & future GameModel gameloop related stuff).
+// TODO: add proper logging; add unit-tests (at least for StageManager .initStages & future GameModel game-loop related stuff).
 public final class ApplicationController {
     private static ApplicationController instance;
 
@@ -44,7 +44,7 @@ public final class ApplicationController {
         stageManager.setupStages(gameView, settingsView);
     }
 
-    public void openSecondaryStage() {
+    private void openSecondaryStage() {
         stageManager.showSecondaryStage();
     }
 }

@@ -39,7 +39,7 @@ and to **run the game** use:
 
 ## Contributing
 
-Pull requests are vey welcome :3. For major changes, please open an issue first
+Pull requests are very welcome :3. For major changes, please open an issue first
 to discuss what you would like to change.
 
 ## License
