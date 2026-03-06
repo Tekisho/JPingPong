@@ -1,6 +1,6 @@
 /* TODO: Refactor */
 @font-face {
-    font-family: "Silkscreen Regular";
+    font-family: "Silkscreen";
     src: url("../fonts/Silkscreen-Regular.ttf");
 }
 
@@ -14,7 +14,7 @@
 }
 
 .label, .text-field, .button {
-    -fx-font-family: "Silkscreen Regular";
+    -fx-font-family: "Silkscreen";
 }
 
 .header-label {
@@ -23,7 +23,7 @@
 
 #root {
     -fx-background-color: linear-gradient(from 0% 0% to 3% 3%, repeat, #121212 0%, #121212 50%, #131313 50%, #131313 100%);
-    -fx-effect: innershadow(gaussian, #000000, 15, 0, 0, 0);
+    -fx-effect: innershadow(gaussian, #000000BF, 15, 0, 0, 0);
 }
 
 .button {
@@ -38,14 +38,15 @@
     -fx-background-color: transparent;
 }
 
+/* FIXME: find way to remove blurriness of settings icon */
 #settings-button{
     -fx-graphic: url("../imgs/settings-icon-24.png");
-    -fx-effect: dropshadow(gaussian, #FFFFFF3F, 15, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, #FFFFFF3F, 10, 0, 0, 0);
     -fx-opacity: 0.95;
 }
 #settings-button:hover {
     -fx-graphic: url("../imgs/settings-icon-hover-24.png");
-    -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, #000000, 7, 0, 0, 0);
 }
 
 #game-interface {
@@ -62,7 +63,11 @@
 }
 
 #playerOneRacket, #playerTwoRacket, #ball {
-    -fx-effect: dropshadow(gaussian, #FFFFFF5F, 50, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, #FFFFFF1E, 20, 0, 0, 0);
+}
+
+.scoredPlayerLabelHighlight {
+    -fx-text-fill: rgba(255, 210, 171, 0.25);
 }
 
 /* SETTINGS VIEW */

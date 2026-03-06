@@ -32,25 +32,30 @@ public class GameController implements GameViewDelegate, Observer {
 
     @Override
     public void handleSceneResize(double w, double h) {
+        // TODO: stop the game while resezing the window
+        GameObjectModel playerOneRacketModel = gameModel.getPlayerOneModel().getRacketModel();
+        GameObjectModel playerTwoRacketModel = gameModel.getPlayerTwoModel().getRacketModel();
+        GameObjectModel ballModel = gameModel.getBallModel();
+
         // Old width and/or height is required to find relative position in available moving space (aka H/W - obj h/w)
         double oldWidth = gameModel.getGameSpaceWidth();
         double oldHeight = gameModel.getGameSpaceHeight();
 
-        double racketOneRelY = gameModel.getPlayerOneModel().getRacketModel().getY() / (oldHeight - gameModel.getPlayerOneModel().getRacketModel().getHeight());
-        double racketTwoRelY = gameModel.getPlayerTwoModel().getRacketModel().getY() / (oldHeight - gameModel.getPlayerTwoModel().getRacketModel().getHeight());
+        double racketOneRelY = playerOneRacketModel.getY() / (oldHeight - playerOneRacketModel.getHeight());
+        double racketTwoRelY = playerTwoRacketModel.getY() / (oldHeight - playerTwoRacketModel.getHeight());
 
-        double ballRelX = gameModel.getBallModel().getX() / (oldWidth - gameModel.getBallModel().getWidth());
-        double ballRelY = gameModel.getBallModel().getY() / (oldHeight - gameModel.getBallModel().getHeight());
+        double ballRelX = ballModel.getX() / (oldWidth - ballModel.getWidth());
+        double ballRelY = ballModel.getY() / (oldHeight - ballModel.getHeight());
 
         gameModel.updateGameSpaceSize(w, h);
 
         gameModel.getPlayerOneModel().getRacketModel().updatePosition(
-                gameModel.getPlayerOneModel().getRacketModel().getX(),
-                racketOneRelY * (gameModel.getGameSpaceHeight() - gameModel.getPlayerOneModel().getRacketModel().getHeight())
+                playerOneRacketModel.getX(),
+                racketOneRelY * (gameModel.getGameSpaceHeight() - playerOneRacketModel.getHeight())
         );
         gameModel.getPlayerTwoModel().getRacketModel().updatePosition(
-                gameModel.getGameSpaceWidth() - (oldWidth - gameModel.getPlayerTwoModel().getRacketModel().getX()),
-                racketTwoRelY * (gameModel.getGameSpaceHeight() - gameModel.getPlayerTwoModel().getRacketModel().getHeight())
+                gameModel.getGameSpaceWidth() - (oldWidth - playerTwoRacketModel.getX()),
+                racketTwoRelY * (gameModel.getGameSpaceHeight() - playerTwoRacketModel.getHeight())
         );
         gameModel.getBallModel().updatePosition(
                 ballRelX * (gameModel.getGameSpaceWidth() - gameModel.getBallModel().getWidth()),
@@ -62,22 +67,14 @@ public class GameController implements GameViewDelegate, Observer {
 
     @Override
     public void handleResetGameObjectPositions() {
-        gameModel.getPlayerOneModel().getRacketModel().updatePositionWithCentering(50, gameModel.getGameSpaceHeight() / 2);
-        gameModel.getPlayerTwoModel().getRacketModel().updatePositionWithCentering(gameModel.getGameSpaceWidth() - 50, gameModel.getGameSpaceHeight() / 2);
-        gameModel.getBallModel().updatePositionWithCentering(gameModel.getGameSpaceWidth() / 2, gameModel.getGameSpaceHeight() / 2);
-
+        gameModel.resetGameObjectsPositions();
         gameModel.notifyAllObservers();
     }
 
     @Override
     public void handleResetGame() {
-        gameModel.resetWinner();
-        gameModel.getPlayerOneModel().setScore(0);
-        gameModel.getPlayerTwoModel().setScore(0);
-
-        handleResetGameObjectPositions();
-
-        gameView.toggleGameEndScreen();
+        gameView.setGameEndScreenVisibility(false);
+        gameModel.resetGame();
     }
 
     /**
@@ -86,8 +83,6 @@ public class GameController implements GameViewDelegate, Observer {
     @Override
     public void handleStartGame() {
         Scene gameScene = gameView.getScene();
-
-        gameModel.createGameLoop();
 
         gameScene.setOnKeyPressed(gameModel.getGameInputHandler());
         gameScene.setOnKeyReleased(gameModel.getGameInputHandler());
@@ -100,50 +95,64 @@ public class GameController implements GameViewDelegate, Observer {
         openSettingsRequest.run();
     }
 
+    // TODO: Modify to higlight last scored player label for couple of seconds to nofity the end-player
     @Override
     public void update() {
+        if (gameModel.getOpenSettingsRequest()) {
+            handleSettingsButtonClick();
+        }
+
         updatePlayersAndScore();
         updateRackets();
         updateBall();
     }
 
     private void updatePlayersAndScore() {
-        gameView.setPlayerOneName(gameModel.getPlayerOneModel().getName());
-        gameView.setPlayerTwoName(gameModel.getPlayerTwoModel().getName());
+        PlayerModel playerOneModel = gameModel.getPlayerOneModel();
+        PlayerModel playerTwoModel = gameModel.getPlayerTwoModel();
 
-        gameView.setScore(gameModel.getPlayerOneModel().getScore(), gameModel.getPlayerTwoModel().getScore());
+        gameView.setPlayerOneName(playerOneModel.getName());
+        gameView.setPlayerTwoName(playerTwoModel.getName());
 
-         if (gameModel.determineWinner()) {
-             gameView.updateWinner(gameModel.getWinnerPlayer().getName());
-             gameView.toggleGameEndScreen();
+        gameView.setScore(playerOneModel.getScore(), playerTwoModel.getScore());
+
+        PlayerModel winnerPlayerModel = gameModel.getWinnerPlayer();
+         if (winnerPlayerModel != null) {
+             gameView.updateWinner(winnerPlayerModel.getName());
+             gameView.setGameEndScreenVisibility(true);
          }
     }
 
     private void updateRackets() {
+        GameObjectModel playerOneRacketModel = gameModel.getPlayerOneModel().getRacketModel();
+        GameObjectModel playerTwoRacketModel = gameModel.getPlayerTwoModel().getRacketModel();
+
         gameView.renderPlayerOneRacket(
-                gameModel.getPlayerOneModel().getRacketModel().getX(),
-                gameModel.getPlayerOneModel().getRacketModel().getY(),
-                gameModel.getPlayerOneModel().getRacketModel().getWidth(),
-                gameModel.getPlayerOneModel().getRacketModel().getHeight(),
-                gameModel.getPlayerOneModel().getRacketModel().getColor()
+                playerOneRacketModel.getX(),
+                playerOneRacketModel.getY(),
+                playerOneRacketModel.getWidth(),
+                playerOneRacketModel.getHeight(),
+                playerOneRacketModel.getColor()
         );
 
         gameView.renderPlayerTwoRacket(
-                gameModel.getPlayerTwoModel().getRacketModel().getX(),
-                gameModel.getPlayerTwoModel().getRacketModel().getY(),
-                gameModel.getPlayerTwoModel().getRacketModel().getWidth(),
-                gameModel.getPlayerTwoModel().getRacketModel().getHeight(),
-                gameModel.getPlayerTwoModel().getRacketModel().getColor()
+                playerTwoRacketModel.getX(),
+                playerTwoRacketModel.getY(),
+                playerTwoRacketModel.getWidth(),
+                playerTwoRacketModel.getHeight(),
+                playerTwoRacketModel.getColor()
         );
     }
 
     private void updateBall() {
+        GameObjectModel ballModel = gameModel.getBallModel();
+
         gameView.renderBall(
-                gameModel.getBallModel().getX(),
-                gameModel.getBallModel().getY(),
-                gameModel.getBallModel().getWidth(),
-                gameModel.getBallModel().getHeight(),
-                gameModel.getBallModel().getColor()
+                ballModel.getX(),
+                ballModel.getY(),
+                ballModel.getWidth(),
+                ballModel.getHeight(),
+                ballModel.getColor()
         );
     }
 }

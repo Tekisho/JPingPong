@@ -3,13 +3,16 @@ package io.github.tekisho.pingponggame.model;
 import javafx.scene.paint.Color;
 
 public abstract sealed class GameObjectModel permits RacketModel, BallModel {
-    private double x = 0;
-    private double y = 0;
+    private double x;
+    private double y;
 
     private double width;
     private double height;
 
     private double velocity;
+
+    private double dx;
+    private double dy;
 
     protected static final Color DEFAULT_FILL_COLOR = Color.rgb(245, 245, 245, 0.95);
     private Color color;
@@ -31,10 +34,13 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
         return y;
     }
     public double getCenterX() {
-        return x + (width / 2);
+        return getCenterCoordinate(x, width);
     }
     public double getCenterY() {
-        return y + (height / 2);
+        return getCenterCoordinate(y, height);
+    }
+    private double getCenterCoordinate(double coordinate, double boundary) {
+        return coordinate + (boundary / 2);
     }
 
     public void updatePosition(double x, double y) {
@@ -53,16 +59,22 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
     // TODO: Modify to properly consider velocity & delta time
     /**
      * Updates position (without centering) according to the game rules
-     * @param x
-     * @param y
      */
-    public void move(double x, double y, double heightBoundary) {
-        if (y <= 0)
-            updatePosition(x, 0);
-        else if (y + height >= heightBoundary)
-            updatePosition(x, heightBoundary - height);
-        else
-            updatePosition(x, y);
+    public void move() {
+        updatePosition(getX() + getDx(), getY() + getDy());
+    }
+
+    public enum DefaultPosition {
+        LEFT,
+        RIGHT,
+        CENTER
+    }
+    public void resetPosition(double widthBoundary, double heightBoundary, DefaultPosition position) {
+        switch (position) {
+            case DefaultPosition.LEFT -> updatePositionWithCentering(50, heightBoundary/ 2);
+            case DefaultPosition.RIGHT -> updatePositionWithCentering(widthBoundary - 50, heightBoundary / 2);
+            case DefaultPosition.CENTER -> updatePositionWithCentering(widthBoundary / 2, heightBoundary / 2);
+        }
     }
 
     /**
@@ -82,6 +94,7 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
 
         updatePositionWithCentering(initialCenterX, initialCenterY);
     }
+
     public void updateSize(double radius) {
         updateSize(radius * 2, radius * 2);
     }
@@ -97,6 +110,19 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
     }
     public void setVelocity(double velocity) {
         this.velocity = velocity;
+    }
+
+    public double getDx() {
+        return dx;
+    }
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+    public double getDy() {
+        return dy;
+    }
+    public void setDy(double dy) {
+        this.dy = dy;
     }
 
     public Color getColor() {

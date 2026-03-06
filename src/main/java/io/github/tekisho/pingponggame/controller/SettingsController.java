@@ -26,8 +26,13 @@ public class SettingsController implements SettingsViewDelegate, Observer {
 
         gameModel.getPlayerOneModel().setScore(settingsView.getPlayerOneScore());
         gameModel.getPlayerTwoModel().setScore(settingsView.getPlayerTwoScore());
+        if (settingsView.getPlayerOneScore() > settingsView.getPlayerTwoScore()) {
+            gameModel.setLastScoredPlayer(gameModel.getPlayerOneModel());
+        } else if (settingsView.getPlayerOneScore() < settingsView.getPlayerTwoScore()) {
+            gameModel.setLastScoredPlayer(gameModel.getPlayerTwoModel());
+        }
 
-        gameModel.changeGameEndScore(settingsView.getGameEndScore());
+        gameModel.setGameEndScore(settingsView.getGameEndScore());
 
         gameModel.getPlayerOneModel().getRacketModel().updateSize(settingsView.getGameRacketWidth(), settingsView.getGameRacketHeight());
         gameModel.getPlayerTwoModel().getRacketModel().updateSize(settingsView.getGameRacketWidth(), settingsView.getGameRacketHeight());
@@ -46,7 +51,10 @@ public class SettingsController implements SettingsViewDelegate, Observer {
             if (oldValue != newValue) {
                 newValue.windowProperty().addListener((observable1, oldValue1, newValue1) -> {
                     newValue1.setOnShowing((windowEvent -> gameModel.stopGameLoop()));
-                    newValue1.setOnCloseRequest((windowEvent -> gameModel.startGameLoop()));
+                    newValue1.setOnCloseRequest((windowEvent -> {
+                        gameModel.setOpenSettingsRequest(false);
+                        gameModel.startGameLoop();
+                    }));
                 });
             }
         });

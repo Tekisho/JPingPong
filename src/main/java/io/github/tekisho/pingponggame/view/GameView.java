@@ -89,13 +89,13 @@ public class GameView extends StackPane implements Initializable {
         gameSpace.widthProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(newValue.doubleValue(), getHeight()));
         gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(getWidth(), newValue.doubleValue()));
 
+        settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleSettingsButtonClick());
+        restartGameButton.setOnMouseClicked(mouseEvent -> delegate.handleResetGame());
+
         sceneProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null)
                 delegate.handleStartGame();
         });
-
-        settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleSettingsButtonClick());
-        restartGameButton.setOnMouseClicked(mouseEvent -> delegate.handleResetGame());
     }
 
     public void setPlayerOneName(String name) {
@@ -120,8 +120,8 @@ public class GameView extends StackPane implements Initializable {
         ball.render(x, y, w, h, fillColor);
     }
 
-    public void toggleGameEndScreen() {
-        gameEndScreen.setVisible(!gameEndScreen.isVisible());
+    public void setGameEndScreenVisibility(boolean visibility) {
+        gameEndScreen.setVisible(visibility);
     }
     public void updateWinner(String winnerName) {
         winnerLabel.setText(winnerName);

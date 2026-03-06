@@ -12,4 +12,14 @@ public final class RacketModel extends GameObjectModel{
     public RacketModel(double width, double height, double velocity) {
         super(width, height, velocity);
     }
+
+    public void move(double heightBoundary) {
+        if (getY() + getDy() < 0) {
+            updatePosition(getX() + getDx(), 0);
+        } else if (getY() + getDy() > heightBoundary - getHeight()) {
+            updatePosition(getX() + getDx(), heightBoundary - getHeight());
+        } else {
+            move();
+        }
+    }
 }

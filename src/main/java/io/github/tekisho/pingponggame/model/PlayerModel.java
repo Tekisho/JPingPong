@@ -3,7 +3,7 @@ package io.github.tekisho.pingponggame.model;
 
 public class PlayerModel {
     private String name;
-    private int score = 0;
+    private int score;
 
     private final RacketModel racketModel;
 
@@ -27,6 +27,13 @@ public class PlayerModel {
     }
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void addScore() {
+        score++;
+    }
+    public void resetScore() {
+        score = 0;
     }
 
     public RacketModel getRacketModel() {
