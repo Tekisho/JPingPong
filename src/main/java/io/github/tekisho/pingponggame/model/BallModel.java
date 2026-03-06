@@ -79,18 +79,7 @@ public final class BallModel extends GameObjectModel {
     }
 
     public void randomizeXyVelocity() {
-        double randomValue = Math.random();
-
-        if (randomValue <= 0.5) {
-            setDy(getVelocity());
-        } else {
-            setDy(-getVelocity());
-        }
-
-        if (randomValue >= 0.5) {
-            setDx(getVelocity());
-        } else {
-            setDx(-getVelocity());
-        }
+        setDx(Math.random() <= 0.5 ? getVelocity() : -getVelocity());
+        setDy(Math.random() <= 0.5 ? getVelocity() : -getVelocity());
     }
 }
