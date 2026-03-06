@@ -3,12 +3,14 @@
 **JPingPong** (aka Java Ping Pong) is a more modern “replica” of the famous game 
 [Pong developed by Atari in 1972](https://en.wikipedia.org/wiki/Pong) on Java using JavaFX, developed for mine practical purposes as a student.
 
-At present, _the game is in active development_ and does not meet all of its functional requirements to be released.
+![Main screen of the game](docs/assets/images/game_main_screenshot.png)
+
+At present, _the game is in active development_ and does not meet ALL of its functional requirements to be released (but **it's already playable :D**).
 
 ## Requirements (from and higher)
 
 - **[JDK21](https://adoptium.net/en-GB/temurin/releases?version=21&os=any&arch=any)**
-- JavaFX21
+- JavaFX21 (i.e., compatible with JDK)
 - Maven 3.9
 - JUnit 5.10 (Jupiter)
 
