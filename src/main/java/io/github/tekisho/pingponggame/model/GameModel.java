@@ -24,7 +24,6 @@ public class GameModel implements Subject {
 
     private final PlayerModel playerOneModel;
     private final PlayerModel playerTwoModel;
-//    private double lastStateChange;
     private final BallModel ballModel;
 
     private PlayerModel winnerPlayer;
@@ -34,7 +33,6 @@ public class GameModel implements Subject {
     // TODO: add abilitity to request game restart by pressing 'R' (or restartGameButton inside the settingsView)
     private boolean gameRestartRequest;
 
-    // FIXME: Decide, when to init. game-loop & input handler
     private AnimationTimer gameLoop;
     private GameInputHandler gameInputHandler;
 
@@ -196,14 +194,14 @@ public class GameModel implements Subject {
         boolean isBallLower = ballCurrentY + ballModel.getRadius() > racket.getY() + racket.getHeight();
         boolean isBallHigher = ballCurrentY - ballModel.getRadius() < racket.getY();
 
-        // FIXME: IDEA. If ball is not "caught", then move racket 1s or unti it reaches it center, then pause for 1 s.
+        // FIXME: IDEA. If ball is not "caught", then move racket 1s or until it reaches it center, then pause for 1 s
         //  double currentSystemTime = System.currentTimeMillis();
 
         if (isBallLower || isBallHigher) {
             if (isBallLower) {
-                racket.setDy(racket.getVelocity() / 1.75);
+                racket.setDy(racket.getVelocity() / 2);
             } else {
-                racket.setDy(-racket.getVelocity() / 1.75);
+                racket.setDy(-racket.getVelocity() / 2);
             }
         } else {
             racket.setDy(0);
@@ -248,8 +246,8 @@ public class GameModel implements Subject {
         if ((tempOneScore < gameEndScore) && (tempTwoScore < gameEndScore))
             return false;
 
-//        winnerPlayer = tempOneScore > tempTwoScore ? playerOneModel : playerTwoModel;
-        winnerPlayer = lastScoredPlayer;
+        winnerPlayer = tempOneScore > tempTwoScore ? playerOneModel : playerTwoModel;
+//        winnerPlayer = lastScoredPlayer;
         return true;
     }
     public void resetWinner() {
@@ -262,6 +260,12 @@ public class GameModel implements Subject {
 
     public void setLastScoredPlayer(PlayerModel lastScoredPlayer) {
         this.lastScoredPlayer = lastScoredPlayer;
+    }
+    public void resetLastScorePlayer() {
+        lastScoredPlayer = null;
+    }
+    public PlayerModel getLastScoredPlayer() {
+        return lastScoredPlayer;
     }
 
     public void resetGameObjectsPositions() {

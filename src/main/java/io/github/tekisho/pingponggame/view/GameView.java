@@ -98,6 +98,32 @@ public class GameView extends StackPane implements Initializable {
         });
     }
 
+    public void addHighlightOnPlayerOneLabel() {
+        addHighlightOnPlayerLabel(playerOneLabel);
+    }
+    public void addHighlightOnPlayerTwoLabel() {
+        addHighlightOnPlayerLabel(playerTwoLabel);
+    }
+    private void addHighlightOnPlayerLabel(Label playerLabel) {
+        final String highlightStyleClass = "scoredPlayerLabelHighlight";
+
+        if (!playerLabel.getStyleClass().contains(highlightStyleClass))
+            playerLabel.getStyleClass().add(highlightStyleClass);
+    }
+
+
+    public void removeHighlightOnPlayerOneLabel() {
+        removeHighlightOnPlayerLabel(playerOneLabel);
+    }
+    public void removeHighlightOnPlayerTwoLabel() {
+        removeHighlightOnPlayerLabel(playerTwoLabel);
+    }
+    private void removeHighlightOnPlayerLabel(Label playerLabel) {
+        final String highlightStyleClass = "scoredPlayerLabelHighlight";
+
+        playerLabel.getStyleClass().remove(highlightStyleClass);
+    }
+
     public void setPlayerOneName(String name) {
         playerOneLabel.setText(name);
     }

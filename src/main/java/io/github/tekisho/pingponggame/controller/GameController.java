@@ -3,7 +3,12 @@ package io.github.tekisho.pingponggame.controller;
 import io.github.tekisho.pingponggame.model.*;
 import io.github.tekisho.pingponggame.view.GameView;
 import io.github.tekisho.pingponggame.view.delegate.GameViewDelegate;
+import javafx.application.Platform;
 import javafx.scene.Scene;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class GameController implements GameViewDelegate, Observer {
     private final GameModel gameModel;
@@ -11,12 +16,16 @@ public class GameController implements GameViewDelegate, Observer {
 
     private Runnable openSettingsRequest;
 
+    private ScheduledExecutorService scheduler;
+
     public GameController(final GameView gameView, final GameModel gameModel) {
         this.gameModel = gameModel;
         this.gameView = gameView;
 
         gameModel.attachObserver(this);
         gameView.setDelegate(this);
+
+        scheduler = Executors.newSingleThreadScheduledExecutor();
 
         update();
     }
@@ -32,7 +41,7 @@ public class GameController implements GameViewDelegate, Observer {
 
     @Override
     public void handleSceneResize(double w, double h) {
-        // TODO: stop the game while resezing the window
+        // TODO: consider temporarly stopping the game while resizing the window
         GameObjectModel playerOneRacketModel = gameModel.getPlayerOneModel().getRacketModel();
         GameObjectModel playerTwoRacketModel = gameModel.getPlayerTwoModel().getRacketModel();
         GameObjectModel ballModel = gameModel.getBallModel();
@@ -98,13 +107,16 @@ public class GameController implements GameViewDelegate, Observer {
     // TODO: Modify to higlight last scored player label for couple of seconds to nofity the end-player
     @Override
     public void update() {
-        if (gameModel.getOpenSettingsRequest()) {
-            handleSettingsButtonClick();
-        }
-
+        updateMiscellaneous();
         updatePlayersAndScore();
         updateRackets();
         updateBall();
+    }
+
+    private void updateMiscellaneous() {
+        if (gameModel.getOpenSettingsRequest()) {
+            handleSettingsButtonClick();
+        }
     }
 
     private void updatePlayersAndScore() {
@@ -120,6 +132,27 @@ public class GameController implements GameViewDelegate, Observer {
          if (winnerPlayerModel != null) {
              gameView.updateWinner(winnerPlayerModel.getName());
              gameView.setGameEndScreenVisibility(true);
+         }
+
+         // FIXME: modify to append resetting highlight if player scored again
+         PlayerModel lastScoredPlayer = gameModel.getLastScoredPlayer();
+         if (lastScoredPlayer != null) {
+             gameModel.resetLastScorePlayer();
+             scheduler.schedule(() -> {
+                 Platform.runLater(() -> {
+                     gameView.removeHighlightOnPlayerOneLabel();
+                     gameView.removeHighlightOnPlayerTwoLabel();
+                 });
+             }, 2, TimeUnit.SECONDS);
+
+             if (lastScoredPlayer.equals(gameModel.getPlayerOneModel())) {
+                 gameView.addHighlightOnPlayerOneLabel();
+                 gameView.removeHighlightOnPlayerTwoLabel();
+             }
+             else {
+                 gameView.addHighlightOnPlayerTwoLabel();
+                 gameView.removeHighlightOnPlayerOneLabel();
+             }
          }
     }
 

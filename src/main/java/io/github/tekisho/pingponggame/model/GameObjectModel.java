@@ -95,6 +95,26 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
         updatePositionWithCentering(initialCenterX, initialCenterY);
     }
 
+    // TODO: Modify to avoid stuck of game object
+    /**
+     * Calculates if collision exists with one of the collidingObjects using Axis-Aligned Bounding Box (AABB) alghorithm
+     * @param collidingObjects
+     * @return GameObjectModel if object is colliding with one of the collidingObjects, otherwise - null
+     * @apiNote It is assumed that although there may be many objects that could cause a collision, the ball can only collide with one object at a time
+     */
+    public GameObjectModel isCollidingWith(GameObjectModel... collidingObjects) {
+        for (GameObjectModel object : collidingObjects) {
+            if (getX() < (object.getX() + object.getWidth()) && getX() + getWidth() > object.getX() &&
+                    getY() < (object.getY() + object.getHeight()) && getY() + getHeight() > object.getY()) {
+                return object;
+            }
+        }
+        return null;
+    }
+    public void resolveCollision(GameObjectModel collidingObject) {
+        // ...
+    }
+
     public void updateSize(double radius) {
         updateSize(radius * 2, radius * 2);
     }

@@ -62,12 +62,17 @@
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
 }
 
-#playerOneRacket, #playerTwoRacket, #ball {
-    -fx-effect: dropshadow(gaussian, #FFFFFF1E, 20, 0, 0, 0);
+#game-interface .scoredPlayerLabelHighlight {
+    -fx-text-fill: #E8A371F2;
+    -fx-effect: dropshadow(gaussian, #E8A371F2, 15, 0, 0, 0);
+}
+#game-interface .scoredPlayerLabelHighlight:hover {
+    -fx-text-fill: rgba(199, 138, 94, 0.95);
+    -fx-effect: dropshadow(gaussian, rgba(151, 106, 73, 0.95), 15, 0, 0, 0);
 }
 
-.scoredPlayerLabelHighlight {
-    -fx-text-fill: rgba(255, 210, 171, 0.25);
+#playerOneRacket, #playerTwoRacket, #ball {
+    -fx-effect: dropshadow(gaussian, #FFFFFF1E, 20, 0, 0, 0);
 }
 
 /* SETTINGS VIEW */
