@@ -22,6 +22,17 @@ public class GameModel implements Subject {
 
     private final Set<Observer> observers = new HashSet<>();
 
+    private AnimationTimer gameLoop;
+    private GameInputHandler gameInputHandler;
+
+    private GameState currentState;
+    public enum GameState {
+        RUNNING,
+        PAUSED,
+        OVER,
+        RESTARTING
+    }
+
     private final PlayerModel playerOneModel;
     private final PlayerModel playerTwoModel;
     private final BallModel ballModel;
@@ -29,18 +40,15 @@ public class GameModel implements Subject {
     private PlayerModel winnerPlayer;
     private PlayerModel lastScoredPlayer;
 
+    // TODO: Refactor. It would be more appropriate to consider removing "openSettingRequest" from the model, since its not related to the state of the game
     private boolean openSettingsRequest;
-    // TODO: add abilitity to request game restart by pressing 'R' (or restartGameButton inside the settingsView)
-    private boolean gameRestartRequest;
-
-    private AnimationTimer gameLoop;
-    private GameInputHandler gameInputHandler;
 
     public GameModel() {
         playerOneModel = new PlayerModel("Player 1");
         playerTwoModel = new PlayerModel("Player 2");
         ballModel = new BallModel();
 
+        currentState = GameState.PAUSED;
         createGameLoop();
     }
 
@@ -86,6 +94,7 @@ public class GameModel implements Subject {
         return openSettingsRequest;
     }
     public void setOpenSettingsRequest(boolean openSettingsRequest) {
+        switchGameState(openSettingsRequest ? GameState.PAUSED : GameState.RUNNING);
         this.openSettingsRequest = openSettingsRequest;
     }
 
@@ -119,6 +128,7 @@ public class GameModel implements Subject {
 
             gameLoop = new AnimationTimer() {
                 {
+                    resetGameObjectsPositions();
                     ballModel.randomizeXyVelocity();
                 }
 
@@ -131,29 +141,48 @@ public class GameModel implements Subject {
         }
     }
 
-    public void startGameLoop() {
-        gameLoop.start();
-    }
-    public void stopGameLoop() {
-        gameLoop.stop();
-    }
-
     private void updateGame (long now, Set<KeyCode> activeKeys) {
-        updateMiscellaneous(activeKeys);
+        switch (currentState) {
+            case GameState.RUNNING -> {
+                updateMiscellaneous(activeKeys);
+                updatePlayerOneRacket(activeKeys);
+                updatePlayerTwoRacket();
+                updateBall();
+            }
+            case GameState.PAUSED, GameState.OVER ->
+                gameLoop.stop();
+            case GameState.RESTARTING -> {
+                resetGame();
+                switchGameState(GameState.RUNNING);
+            }
+        }
+    }
 
-        updatePlayerOneRacket(activeKeys);
-        updatePlayerTwoRacket();
-        updateBall();
+    public void switchGameState(GameState state) {
+        if ((state == GameState.RUNNING && currentState == GameState.PAUSED) || (state == GameState.RESTARTING && currentState == GameState.OVER))
+            gameLoop.start();
+
+        currentState = state;
     }
 
     private void updateMiscellaneous(Set<KeyCode> activeKeys) {
         if (determineWinner()) {
-            gameLoop.stop();
+            switchGameState(GameState.OVER);
         }
 
         if (activeKeys.contains(KeyCode.ESCAPE)) {
-            openSettingsRequest = true;
             gameInputHandler.removeActiveKey(KeyCode.ESCAPE);
+            setOpenSettingsRequest(true);
+        }
+
+        if (activeKeys.contains(KeyCode.P)) {
+            gameInputHandler.removeActiveKey(KeyCode.P);
+            switchGameState(GameState.PAUSED);
+        }
+
+        if (activeKeys.contains(KeyCode.R)) {
+            gameInputHandler.removeActiveKey(KeyCode.R);
+            switchGameState(GameState.RESTARTING);
         }
     }
 
@@ -196,7 +225,6 @@ public class GameModel implements Subject {
 
         // FIXME: IDEA. If ball is not "caught", then move racket 1s or until it reaches it center, then pause for 1 s
         //  double currentSystemTime = System.currentTimeMillis();
-
         if (isBallLower || isBallHigher) {
             if (isBallLower) {
                 racket.setDy(racket.getVelocity() / 2);
@@ -232,7 +260,7 @@ public class GameModel implements Subject {
         resetWinner();
         resetScores();
         resetGameObjectsPositions();
-        gameLoop.start();
+        ballModel.randomizeXyVelocity();
     }
 
     /**

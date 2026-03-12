@@ -1,7 +1,7 @@
 package io.github.tekisho.pingponggame.controller;
 
-import io.github.tekisho.pingponggame.model.GameModel;
 import io.github.tekisho.pingponggame.manager.StageManager;
+import io.github.tekisho.pingponggame.model.GameModel;
 import io.github.tekisho.pingponggame.view.GameView;
 import io.github.tekisho.pingponggame.view.SettingsView;
 import javafx.stage.Stage;

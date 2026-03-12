@@ -5,9 +5,7 @@ public interface GameViewDelegate {
 
     void handleSceneResize(double w, double h);
 
-    void handleResetGameObjectPositions();
-
-    void  handleResetGame();
+    void handleResetAndRestartGame();
 
     void handleSettingsButtonClick();
 

@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -72,7 +71,7 @@ public class SettingsView extends VBox implements Initializable {
 
     public void setupEventHandlers() {
         confirmChangesButton.setOnMouseClicked(mouseEvent -> delegate.handleConfirmChangesButtonClick());
-        delegate.handlePauseAndRestartGame();
+        delegate.handleGamePauseAndСontinuation();
     }
 
     // Players & Score

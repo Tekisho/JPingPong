@@ -83,14 +83,13 @@ public class GameView extends StackPane implements Initializable {
 
     public void setupEventHandlers() {
         delegate.handleSetInitialSize();
-        delegate.handleResetGameObjectPositions();
 
         // TODO: try to find a better way to bind width & height properties to not make redundant operations.
         gameSpace.widthProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(newValue.doubleValue(), getHeight()));
         gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(getWidth(), newValue.doubleValue()));
 
         settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleSettingsButtonClick());
-        restartGameButton.setOnMouseClicked(mouseEvent -> delegate.handleResetGame());
+        restartGameButton.setOnMouseClicked(mouseEvent -> delegate.handleResetAndRestartGame());
 
         sceneProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null)

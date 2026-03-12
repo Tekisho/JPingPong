@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+// TODO: Fix bug when min the game window - it accelerates (since not cons. delta time) and ... 1) consider delta-time, 2) stop game when window is minimized
 public class GameController implements GameViewDelegate, Observer {
     private final GameModel gameModel;
     private final GameView gameView;
@@ -58,32 +59,29 @@ public class GameController implements GameViewDelegate, Observer {
 
         gameModel.updateGameSpaceSize(w, h);
 
-        gameModel.getPlayerOneModel().getRacketModel().updatePosition(
+        double newWidth = gameModel.getGameSpaceWidth();
+        double newHeight = gameModel.getGameSpaceHeight();
+
+        playerOneRacketModel.updatePosition(
                 playerOneRacketModel.getX(),
-                racketOneRelY * (gameModel.getGameSpaceHeight() - playerOneRacketModel.getHeight())
+                racketOneRelY * (newHeight - playerOneRacketModel.getHeight())
         );
-        gameModel.getPlayerTwoModel().getRacketModel().updatePosition(
-                gameModel.getGameSpaceWidth() - (oldWidth - playerTwoRacketModel.getX()),
-                racketTwoRelY * (gameModel.getGameSpaceHeight() - playerTwoRacketModel.getHeight())
+        playerTwoRacketModel.updatePosition(
+                newWidth - (oldWidth - playerTwoRacketModel.getX()),
+                racketTwoRelY * (newHeight - playerTwoRacketModel.getHeight())
         );
-        gameModel.getBallModel().updatePosition(
-                ballRelX * (gameModel.getGameSpaceWidth() - gameModel.getBallModel().getWidth()),
-                ballRelY * (gameModel.getGameSpaceHeight() - gameModel.getBallModel().getHeight())
+        ballModel.updatePosition(
+                ballRelX * (newWidth - ballModel.getWidth()),
+                ballRelY * (newHeight - ballModel.getHeight())
         );
 
         gameModel.notifyAllObservers();
     }
 
     @Override
-    public void handleResetGameObjectPositions() {
-        gameModel.resetGameObjectsPositions();
-        gameModel.notifyAllObservers();
-    }
-
-    @Override
-    public void handleResetGame() {
+    public void handleResetAndRestartGame() {
         gameView.setGameEndScreenVisibility(false);
-        gameModel.resetGame();
+        gameModel.switchGameState(GameModel.GameState.RESTARTING);
     }
 
     /**
@@ -96,7 +94,7 @@ public class GameController implements GameViewDelegate, Observer {
         gameScene.setOnKeyPressed(gameModel.getGameInputHandler());
         gameScene.setOnKeyReleased(gameModel.getGameInputHandler());
 
-        gameModel.startGameLoop();
+        gameModel.switchGameState(GameModel.GameState.RUNNING);
     }
 
     @Override
@@ -104,7 +102,6 @@ public class GameController implements GameViewDelegate, Observer {
         openSettingsRequest.run();
     }
 
-    // TODO: Modify to higlight last scored player label for couple of seconds to nofity the end-player
     @Override
     public void update() {
         updateMiscellaneous();

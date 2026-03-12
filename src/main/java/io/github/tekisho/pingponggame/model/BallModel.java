@@ -40,18 +40,16 @@ public final class BallModel extends GameObjectModel {
         if (getY() + getDy() < 0 || getY() + getDy() > heightBoundary - getHeight()) {
             setDy(-getDy());
         }
-
         processRacketBouncing(isCollidingWith(collidingObjects));
-
         move();
     }
 
-    // TODO: Modify to calculate proper bouncing angle
+    // TODO: Modify to calculate proper bouncing angle and properly use NEW velocity
     private void processRacketBouncing(GameObjectModel collidingObject) {
         if (collidingObject != null) {
             setDx(-getDx());
 
-            double max = 2;
+            double max = getVelocity();
             double min = -max;
             double randomValue = min + Math.random() * (max - min);
             setDy(randomValue);

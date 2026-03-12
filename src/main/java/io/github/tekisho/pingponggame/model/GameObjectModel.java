@@ -95,7 +95,6 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
         updatePositionWithCentering(initialCenterX, initialCenterY);
     }
 
-    // TODO: Modify to avoid stuck of game object
     /**
      * Calculates if collision exists with one of the collidingObjects using Axis-Aligned Bounding Box (AABB) alghorithm
      * @param collidingObjects
@@ -111,6 +110,7 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
         }
         return null;
     }
+    // TODO: Modify to "resolve" stuck bug by pushing object out
     public void resolveCollision(GameObjectModel collidingObject) {
         // ...
     }
@@ -130,6 +130,15 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
     }
     public void setVelocity(double velocity) {
         this.velocity = velocity;
+
+        double currentVelocity = Math.sqrt(dx*dx + dy*dy);
+        if (currentVelocity > 0) {
+            double normalizedDx = dx / currentVelocity;
+            double normalizedDy = dy / currentVelocity;
+
+            dx = normalizedDx * velocity;
+            dy = normalizedDy * velocity;
+        }
     }
 
     public double getDx() {
