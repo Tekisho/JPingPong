@@ -46,7 +46,7 @@ public class SettingsController implements SettingsViewDelegate, Observer {
     }
 
     @Override
-    public void handleGamePauseAndСontinuation() {
+    public void handleGamePauseAndContinuation() {
         settingsView.sceneProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue) {
                 newValue.windowProperty().addListener((observable1, oldValue1, newValue1) -> {

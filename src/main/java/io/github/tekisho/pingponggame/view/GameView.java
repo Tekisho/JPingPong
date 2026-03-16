@@ -36,7 +36,12 @@ public class GameView extends StackPane implements Initializable {
     @FXML
     private Label winnerLabel;
     @FXML
-    private Button restartGameButton;
+    private Button restartGameButtonOnEnd;
+
+    @FXML
+    private BorderPane gamePauseScreen;
+    @FXML
+    private Button restartGameButtonOnPause;
 
     private GameObjectViewComponent playerOneRacket;
     private GameObjectViewComponent playerTwoRacket;
@@ -89,7 +94,8 @@ public class GameView extends StackPane implements Initializable {
         gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(getWidth(), newValue.doubleValue()));
 
         settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleSettingsButtonClick());
-        restartGameButton.setOnMouseClicked(mouseEvent -> delegate.handleResetAndRestartGame());
+        restartGameButtonOnEnd.setOnMouseClicked(mouseEvent -> delegate.handleResetAndRestartGame());
+        restartGameButtonOnPause.setOnMouseClicked(mouseEvent -> delegate.handleResumeGame());
 
         sceneProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null)
@@ -150,5 +156,9 @@ public class GameView extends StackPane implements Initializable {
     }
     public void updateWinner(String winnerName) {
         winnerLabel.setText(winnerName);
+    }
+
+    public void setGamePauseScreenVisibility(boolean visibility) {
+        gamePauseScreen.setVisible(visibility);
     }
 }

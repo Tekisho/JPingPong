@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <!-- TODO: add ui for pause, modify last scored highlight -->
-<fx:root id="root" prefWidth="800.0" prefHeight="600.0"  stylesheets="@../css/styles.css" type="StackPane" xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root id="root" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" type="StackPane" xmlns="http://javafx.com/javafx/21.0.10" xmlns:fx="http://javafx.com/fxml/1">
         <Pane fx:id="gameSpace" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
         <VBox id="game-interface" alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
             <HBox>
@@ -29,7 +30,15 @@
                         <Label fx:id="winnerLabel" text="[Player NAME]" />
                         <Label styleClass="header-label" text="is A WINNER" />
                     </HBox>
-                    <Button id="restart-game-button" fx:id="restartGameButton" focusTraversable="false" mnemonicParsing="false" styleClass="image-button" />
+                    <Button id="restart-game-button" fx:id="restartGameButtonOnEnd" focusTraversable="false" mnemonicParsing="false" styleClass="image-button" />
+                </VBox>
+            </center>
+        </BorderPane>
+        <BorderPane id="game-pause-screen" fx:id="gamePauseScreen" visible="false">
+            <center>
+                <VBox alignment="CENTER" spacing="12.5" BorderPane.alignment="CENTER">
+                    <Label styleClass="header-label" text="Game is on pause" />
+                <Button id="restart-game-button" fx:id="restartGameButtonOnPause" focusTraversable="false" mnemonicParsing="false" styleClass="image-button" />
                 </VBox>
             </center>
         </BorderPane>

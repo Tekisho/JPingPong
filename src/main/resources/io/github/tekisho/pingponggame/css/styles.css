@@ -110,19 +110,19 @@
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
 }
 
-#game-end-screen {
+#game-end-screen, #game-pause-screen {
     -fx-padding: 25px;
     -fx-background-color: #00000047;
 }
-#game-end-screen .label {
+#game-end-screen .label, #game-pause-screen .label {
     -fx-text-fill: #FFFFFFF2;
     -fx-effect: dropshadow(gaussian, #FFFFFF3F, 5, 0, 0, 0);
 }
-#game-end-screen .label:hover {
+#game-end-screen .label:hover, #game-pause-screen .label:hover {
     -fx-text-fill: #DDDDDDF2;
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
 }
-#game-end-screen .highlighted-label {
+#game-end-screen .highlighted-label, #game-pause-screen .highlighted-label {
     -fx-text-fill: #DDDDDDF2;
     -fx-background-color: rgba(28, 28, 28, 0.95);
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);

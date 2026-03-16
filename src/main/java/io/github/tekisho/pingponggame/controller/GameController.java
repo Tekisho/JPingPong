@@ -17,7 +17,7 @@ public class GameController implements GameViewDelegate, Observer {
 
     private Runnable openSettingsRequest;
 
-    private ScheduledExecutorService scheduler;
+    private final ScheduledExecutorService scheduler;
 
     public GameController(final GameView gameView, final GameModel gameModel) {
         this.gameModel = gameModel;
@@ -84,6 +84,12 @@ public class GameController implements GameViewDelegate, Observer {
         gameModel.switchGameState(GameModel.GameState.RESTARTING);
     }
 
+    @Override
+    public void handleResumeGame() {
+        gameView.setGamePauseScreenVisibility(false);
+        gameModel.switchGameState(GameModel.GameState.RUNNING);
+    }
+
     /**
      * Starting up the game
      */
@@ -111,6 +117,8 @@ public class GameController implements GameViewDelegate, Observer {
     }
 
     private void updateMiscellaneous() {
+        gameView.setGamePauseScreenVisibility((gameModel.getCurrentState() == GameModel.GameState.PAUSED));
+
         if (gameModel.getOpenSettingsRequest()) {
             handleSettingsButtonClick();
         }
@@ -135,21 +143,21 @@ public class GameController implements GameViewDelegate, Observer {
          PlayerModel lastScoredPlayer = gameModel.getLastScoredPlayer();
          if (lastScoredPlayer != null) {
              gameModel.resetLastScorePlayer();
+             gameView.removeHighlightOnPlayerOneLabel();
+             gameView.removeHighlightOnPlayerTwoLabel();
+
+             if (lastScoredPlayer.equals(gameModel.getPlayerOneModel())) {
+                 gameView.addHighlightOnPlayerOneLabel();
+             } else {
+                 gameView.addHighlightOnPlayerTwoLabel();
+             }
+
              scheduler.schedule(() -> {
                  Platform.runLater(() -> {
                      gameView.removeHighlightOnPlayerOneLabel();
                      gameView.removeHighlightOnPlayerTwoLabel();
                  });
              }, 2, TimeUnit.SECONDS);
-
-             if (lastScoredPlayer.equals(gameModel.getPlayerOneModel())) {
-                 gameView.addHighlightOnPlayerOneLabel();
-                 gameView.removeHighlightOnPlayerTwoLabel();
-             }
-             else {
-                 gameView.addHighlightOnPlayerTwoLabel();
-                 gameView.removeHighlightOnPlayerOneLabel();
-             }
          }
     }
 

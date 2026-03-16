@@ -7,6 +7,8 @@ public interface GameViewDelegate {
 
     void handleResetAndRestartGame();
 
+    void handleResumeGame();
+
     void handleSettingsButtonClick();
 
     void handleStartGame();

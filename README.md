@@ -14,6 +14,9 @@ At present, _the game is in active development_ and does not meet ALL of its fun
 - Maven 3.9
 - JUnit 5.10 (Jupiter)
 
+> [!NOTE]
+> Only JDK is required, every other dependencies could be handled using maven wrapper.
+
 ## Installation
 **First**, _navigate to the desired folder through the terminal_,
 ```

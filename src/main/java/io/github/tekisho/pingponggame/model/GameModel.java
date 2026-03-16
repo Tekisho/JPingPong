@@ -27,6 +27,7 @@ public class GameModel implements Subject {
 
     private GameState currentState;
     public enum GameState {
+        AWAITING_STARTUP,
         RUNNING,
         PAUSED,
         OVER,
@@ -48,7 +49,7 @@ public class GameModel implements Subject {
         playerTwoModel = new PlayerModel("Player 2");
         ballModel = new BallModel();
 
-        currentState = GameState.PAUSED;
+        currentState = GameState.AWAITING_STARTUP;
         createGameLoop();
     }
 
@@ -159,10 +160,13 @@ public class GameModel implements Subject {
     }
 
     public void switchGameState(GameState state) {
-        if ((state == GameState.RUNNING && currentState == GameState.PAUSED) || (state == GameState.RESTARTING && currentState == GameState.OVER))
+        if ((currentState == GameState.AWAITING_STARTUP) || (state == GameState.RUNNING && currentState == GameState.PAUSED) || (state == GameState.RESTARTING && currentState == GameState.OVER))
             gameLoop.start();
 
         currentState = state;
+    }
+    public GameState getCurrentState() {
+        return currentState;
     }
 
     private void updateMiscellaneous(Set<KeyCode> activeKeys) {

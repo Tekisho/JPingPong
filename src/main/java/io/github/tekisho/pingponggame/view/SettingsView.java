@@ -71,7 +71,7 @@ public class SettingsView extends VBox implements Initializable {
 
     public void setupEventHandlers() {
         confirmChangesButton.setOnMouseClicked(mouseEvent -> delegate.handleConfirmChangesButtonClick());
-        delegate.handleGamePauseAndСontinuation();
+        delegate.handleGamePauseAndContinuation();
     }
 
     // Players & Score
