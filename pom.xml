@@ -20,9 +20,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.apidocs.basedir>docs</project.apidocs.basedir>
+
         <junit.version>5.10.2</junit.version>
         <javafx.version>21.0.10</javafx.version>
         <java.version>21</java.version>
+        <javadoc.version>3.12.0</javadoc.version>
     </properties>
 
     <dependencies>
@@ -37,6 +40,14 @@
             <version>${javafx.version}</version>
         </dependency>
 
+        <!-- Source: https://mvnrepository.com/artifact/com.pixelduke/fxthemes -->
+        <dependency>
+            <groupId>com.pixelduke</groupId>
+            <artifactId>fxthemes</artifactId>
+            <version>1.6.0</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -48,6 +59,13 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${javadoc.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -79,9 +97,26 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <options>
+                                <!-- So that changing the background of a native Window works well (at least on some machines using win11) -->
+                                <option>-Dprism.forceUploadingPainter=${forceUploadingPainter}</option>
+                                <!-- For getting the native window handle (WindowUtils.getNativeHandleForStage method) -->
+                                <option>--add-opens</option>
+                                <option>javafx.graphics/javafx.stage=com.pixelduke.fxthemes</option>
+                                <option>--add-exports</option>
+                                <option>javafx.graphics/com.sun.javafx.tk.quantum=com.pixelduke.fxthemes</option>
+                            </options>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${javadoc.version}</version>
+                <configuration>
+                    <outputDirectory>${project.apidocs.basedir}</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -22,7 +22,7 @@
 }
 
 #root {
-    -fx-background-color: linear-gradient(from 0% 0% to 3% 3%, repeat, #121212 0%, #121212 50%, #131313 50%, #131313 100%);
+    -fx-background-color: linear-gradient(from 0% 0% to 2% 2%, repeat, #121212 0%, #121212 50%, #131313 50%, #131313 100%);
     -fx-effect: innershadow(gaussian, #000000BF, 15, 0, 0, 0);
 }
 
@@ -123,10 +123,11 @@
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
 }
 #game-end-screen .highlighted-label, #game-pause-screen .highlighted-label {
-    -fx-text-fill: #DDDDDDF2;
-    -fx-background-color: rgba(28, 28, 28, 0.95);
+    -fx-text-fill:  #E8A371F2;
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
-    -fx-padding: 10px 20px;
+}
+#game-end-screen .highlighted-label:hover, #game-pause-screen .highlighted-label:hover {
+    -fx-text-fill: rgba(199, 138, 94, 0.95);
 }
 
 #restart-game-button {
@@ -136,5 +137,15 @@
 }
 #restart-game-button:hover {
     -fx-graphic: url("../imgs/reload-icon-hover-32.png");
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
+}
+
+#resume-game-button {
+    -fx-graphic: url("../imgs/play-icon-24.png");
+    -fx-effect: dropshadow(gaussian, #FFFFFF3F, 15, 0, 0, 0);
+    -fx-opacity: 0.95;
+}
+#resume-game-button:hover {
+    -fx-graphic: url("../imgs/play-icon-hover-24.png");
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
 }
