@@ -1,6 +1,9 @@
 package io.github.tekisho.pingponggame.model;
 
-
+/**
+ * Represents player model.
+ * @implNote Player must always have the racket.
+ */
 public class PlayerModel {
     private String name;
     private int score;
@@ -29,9 +32,16 @@ public class PlayerModel {
         this.score = score;
     }
 
+    /**
+     * Adds one score to the current score of the player.
+     */
     public void addScore() {
         score++;
     }
+
+    /**
+     * Resets score of the player to zero.
+     */
     public void resetScore() {
         score = 0;
     }

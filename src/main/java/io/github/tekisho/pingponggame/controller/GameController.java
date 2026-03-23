@@ -10,7 +10,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-// TODO: Fix bug when min the game window - it accelerates (since not cons. delta time) and ... 1) consider delta-time, 2) stop game when window is minimized
+// TODO: Fix bug when min the game window - it accelerates (since not cons. delta time). 1) consider delta-time, 2) stop game when window is minimized
+/**
+ * Represents game controller, that handles user input & allows interaction with game model through game view.
+ */
 public class GameController implements GameViewDelegate, Observer {
     private final GameModel gameModel;
     private final GameView gameView;
@@ -41,8 +44,8 @@ public class GameController implements GameViewDelegate, Observer {
     }
 
     @Override
-    public void handleSceneResize(double w, double h) {
-        // TODO: consider temporarly stopping the game while resizing the window
+    public void handleViewResize(double w, double h) {
+        // TODO: consider temp. stopping the game while resizing the window
         GameObjectModel playerOneRacketModel = gameModel.getPlayerOneModel().getRacketModel();
         GameObjectModel playerTwoRacketModel = gameModel.getPlayerTwoModel().getRacketModel();
         GameObjectModel ballModel = gameModel.getBallModel();
@@ -90,9 +93,6 @@ public class GameController implements GameViewDelegate, Observer {
         gameModel.switchGameState(GameModel.GameState.RUNNING);
     }
 
-    /**
-     * Starting up the game
-     */
     @Override
     public void handleStartGame() {
         Scene gameScene = gameView.getScene();
@@ -104,7 +104,7 @@ public class GameController implements GameViewDelegate, Observer {
     }
 
     @Override
-    public void handleSettingsButtonClick() {
+    public void handleOpenSettingsRequest() {
         openSettingsRequest.run();
     }
 
@@ -120,7 +120,7 @@ public class GameController implements GameViewDelegate, Observer {
         gameView.setGamePauseScreenVisibility((gameModel.getCurrentState() == GameModel.GameState.PAUSED));
 
         if (gameModel.getOpenSettingsRequest()) {
-            handleSettingsButtonClick();
+            handleOpenSettingsRequest();
         }
     }
 
@@ -134,15 +134,15 @@ public class GameController implements GameViewDelegate, Observer {
         gameView.setScore(playerOneModel.getScore(), playerTwoModel.getScore());
 
         PlayerModel winnerPlayerModel = gameModel.getWinnerPlayer();
-         if (winnerPlayerModel != null) {
+         if (winnerPlayerModel != null && gameModel.getCurrentState() == GameModel.GameState.OVER) {
              gameView.updateWinner(winnerPlayerModel.getName());
              gameView.setGameEndScreenVisibility(true);
          }
 
          // FIXME: modify to append resetting highlight if player scored again
          PlayerModel lastScoredPlayer = gameModel.getLastScoredPlayer();
-         if (lastScoredPlayer != null) {
-             gameModel.resetLastScorePlayer();
+         if (lastScoredPlayer != null && gameModel.getCurrentState() == GameModel.GameState.RUNNING) {
+             gameModel.resetLastScoredPlayer();
              gameView.removeHighlightOnPlayerOneLabel();
              gameView.removeHighlightOnPlayerTwoLabel();
 

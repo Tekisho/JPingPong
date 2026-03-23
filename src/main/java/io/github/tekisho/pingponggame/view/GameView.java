@@ -2,6 +2,7 @@ package io.github.tekisho.pingponggame.view;
 
 import io.github.tekisho.pingponggame.view.component.GameObjectViewComponent;
 import io.github.tekisho.pingponggame.view.delegate.GameViewDelegate;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,7 +17,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameView extends StackPane implements Initializable {
+/**
+ * Represents game view, which displays the game.
+ */
+public class GameView extends StackPane implements View<GameViewDelegate>, Initializable {
     private GameViewDelegate delegate;
 
     @FXML
@@ -62,21 +66,19 @@ public class GameView extends StackPane implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        playerOneRacket = new GameObjectViewComponent.Builder(GameObjectViewComponent.GameObjectType.RACKET)
-                .build();
+        playerOneRacket = new GameObjectViewComponent.Builder(GameObjectViewComponent.GameObjectType.RACKET).build();
         playerOneRacket.setId("playerOneRacket");
 
-        playerTwoRacket = new GameObjectViewComponent.Builder(GameObjectViewComponent.GameObjectType.RACKET)
-                .build();
+        playerTwoRacket = new GameObjectViewComponent.Builder(GameObjectViewComponent.GameObjectType.RACKET).build();
         playerTwoRacket.setId("playerTwoRacket");
 
-        ball = new GameObjectViewComponent.Builder(GameObjectViewComponent.GameObjectType.BALL)
-                .build();
+        ball = new GameObjectViewComponent.Builder(GameObjectViewComponent.GameObjectType.BALL).build();
         ball.setId("ball");
 
         gameSpace.getChildren().addAll(playerOneRacket, playerTwoRacket, ball);
     }
 
+    @Override
     public void setDelegate(GameViewDelegate delegate) {
         if (this.delegate != null) {
             throw new RuntimeException("Game delegate already exist!");
@@ -86,14 +88,15 @@ public class GameView extends StackPane implements Initializable {
         setupEventHandlers();
     }
 
+    @Override
     public void setupEventHandlers() {
         delegate.handleSetInitialSize();
 
         // TODO: try to find a better way to bind width & height properties to not make redundant operations.
-        gameSpace.widthProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(newValue.doubleValue(), getHeight()));
-        gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleSceneResize(getWidth(), newValue.doubleValue()));
+        gameSpace.widthProperty().addListener((observable, oldValue, newValue) -> delegate.handleViewResize(newValue.doubleValue(), getHeight()));
+        gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleViewResize(getWidth(), newValue.doubleValue()));
 
-        settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleSettingsButtonClick());
+        settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleOpenSettingsRequest());
         restartGameButtonOnEnd.setOnMouseClicked(mouseEvent -> delegate.handleResetAndRestartGame());
         restartGameButtonOnPause.setOnMouseClicked(mouseEvent -> delegate.handleResumeGame());
 

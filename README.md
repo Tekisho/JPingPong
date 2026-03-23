@@ -1,10 +1,10 @@
 <h1>
-    <img src="src/main/resources/io/github/tekisho/pingponggame/imgs/app-icon-48.png" width="32" alt="app icon">
+    <img src="src/main/resources/io/github/tekisho/pingponggame/imgs/app-icon-48.png" width="32 px" alt="app icon">
     JPingPong
 </h1>
 
 **JPingPong** (aka Java Ping-Pong) is a more modern “replica” of the famous game
-[Pong developed by Atari in 1972](https://en.wikipedia.org/wiki/Pong) on Java using JavaFX, developed for mine practical purposes as a student.
+[Pong developed by Atari in 1972](https://en.wikipedia.org/wiki/Pong) on Java using JavaFX, developed as part of a student project.
 
 ![Main screen of the game](docs/assets/images/game_main_screenshot.png)
 
@@ -45,8 +45,36 @@ and to **run the game** use:
 > -Dprism.forceUploadingPainter=${forceUploadingPainter} --add-opens javafx.graphics/javafx.stage=com.pixelduke.fxthemes --add-exports javafx.graphics/com.sun.javafx.tk.quantum=com.pixelduke.fxthemes
 > ```
 
-## Features (in progress :O)
-...
+## Controls
+* `W`, `S` (or according `ARROW` keys) to move racket UP or DOWN
+* `R` to trigger "fast restart" of the game
+* `P` to activate pause
+* `ESC` to show settings window, automatically puts game on pause
+
+## Features
+* Adaptive UI, Dark theme
+* Keyboard controls
+* Basic physics (i.e., velocity, bouncing & collisions)
+* Bot (single-player) opponent
+* Score system
+* Ball speed-up (after each 2nd racket bounce)
+* Game settings
+* Pause, Fast Restart, Game Over
+
+## Roadmap (in progress :O)
+* [ ] Delta time
+* [ ] Proper Physics
+  * [ ] multiple collisions detection
+  * [ ] overlapping (aka stuck) collisions resolving
+  * [ ] velocity (vectors related)
+  * [ ] bouncing (angles related)
+* [ ] Settings
+  * [X] basics
+  * [ ] reset to defaults
+  * [ ] user input validation
+  * [ ] scroll
+* [ ] SFXs
+* [ ] Random Event System
 
 ## Contributing
 Pull requests are very welcome :3. For major changes, please open an issue first

@@ -5,6 +5,9 @@ import io.github.tekisho.pingponggame.model.Observer;
 import io.github.tekisho.pingponggame.view.SettingsView;
 import io.github.tekisho.pingponggame.view.delegate.SettingsViewDelegate;
 
+/**
+ * Represents settings controller, that handles user input & allows interaction with game model through settings view.
+ */
 public class SettingsController implements SettingsViewDelegate, Observer {
     private final SettingsView settingsView;
     private final GameModel gameModel;
@@ -20,7 +23,7 @@ public class SettingsController implements SettingsViewDelegate, Observer {
     }
 
     @Override
-    public void handleConfirmChangesButtonClick() {
+    public void handleApplySettingsChanges() {
         gameModel.getPlayerOneModel().setName(settingsView.getPlayerOneName());
         gameModel.getPlayerTwoModel().setName(settingsView.getPlayerTwoName());
 
@@ -40,7 +43,7 @@ public class SettingsController implements SettingsViewDelegate, Observer {
 
         gameModel.getPlayerOneModel().getRacketModel().setVelocity(settingsView.getGameRacketVelocity());
         gameModel.getPlayerTwoModel().getRacketModel().setVelocity(settingsView.getGameRacketVelocity());
-        gameModel.getBallModel().setVelocity(settingsView.getGameBallVelocity());
+        gameModel.getBallModel().setBasicVelocity(settingsView.getGameBallVelocity());
 
         gameModel.notifyAllObservers();
     }
@@ -85,6 +88,6 @@ public class SettingsController implements SettingsViewDelegate, Observer {
 
     private void updateBall() {
         settingsView.setGameBallRadius(gameModel.getBallModel().getRadius());
-        settingsView.setGameBallVelocity(gameModel.getBallModel().getVelocity());
+        settingsView.setGameBallVelocity(gameModel.getBallModel().getBasicVelocity());
     }
 }

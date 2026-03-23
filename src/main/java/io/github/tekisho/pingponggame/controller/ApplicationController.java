@@ -7,6 +7,9 @@ import io.github.tekisho.pingponggame.view.SettingsView;
 import javafx.stage.Stage;
 
 // TODO: add proper logging; add unit-tests (at least for StageManager .initStages & future GameModel game-loop related stuff).
+/**
+ * Represents main controller of the application, which in charge of proper launch.
+ */
 public final class ApplicationController {
     private static ApplicationController instance;
 
@@ -26,7 +29,9 @@ public final class ApplicationController {
     private final SettingsView settingsView;
     private final SettingsController settingsController;
 
-
+    /**
+     * Constructs application controller, and every other classes that are required to run correctly.
+     */
     private ApplicationController() {
         stageManager = new StageManager();
 
@@ -39,6 +44,10 @@ public final class ApplicationController {
         settingsController = new SettingsController(settingsView, gameModel);
     }
 
+    /**
+     * Initializes application by using stage manager.
+     * @param primaryStage main stage of the app
+     */
     public void initApplication(Stage primaryStage) {
         stageManager.initStages(primaryStage);
         stageManager.setupStages(gameView, settingsView);

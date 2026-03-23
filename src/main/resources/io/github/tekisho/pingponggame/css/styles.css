@@ -132,7 +132,7 @@
 
 #restart-game-button {
     -fx-graphic: url("../imgs/reload-icon-32.png");
-    -fx-effect: dropshadow(gaussian, #FFFFFF3F, 15, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, #222222AA, 15, 0, 0, 0);
     -fx-opacity: 0.95;
 }
 #restart-game-button:hover {
@@ -142,7 +142,7 @@
 
 #resume-game-button {
     -fx-graphic: url("../imgs/play-icon-24.png");
-    -fx-effect: dropshadow(gaussian, #FFFFFF3F, 15, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, #222222AA, 15, 0, 0, 0);
     -fx-opacity: 0.95;
 }
 #resume-game-button:hover {

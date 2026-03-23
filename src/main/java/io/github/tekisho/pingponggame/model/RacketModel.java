@@ -1,9 +1,12 @@
 package io.github.tekisho.pingponggame.model;
 
+/**
+ * Represents Racket, concrete {@link GameObjectModel}.
+ */
 public final class RacketModel extends GameObjectModel{
-    public static final double DEFAULT_WIDTH = 20;
-    public static final double DEFAULT_HEIGHT = 90;
-    public static final double DEFAULT_VELOCITY = 3;
+    private static final double DEFAULT_WIDTH = 20;
+    private static final double DEFAULT_HEIGHT = 90;
+    private static final double DEFAULT_VELOCITY = 3;
 
     public RacketModel() {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_VELOCITY);
@@ -13,6 +16,11 @@ public final class RacketModel extends GameObjectModel{
         super(width, height, velocity);
     }
 
+    /**
+     * Moves racket, considering borders.
+     * @param heightBoundary height of the object container
+     * @see #move()
+     */
     public void move(double heightBoundary) {
         if (getY() + getDy() < 0) {
             updatePosition(getX() + getDx(), 0);

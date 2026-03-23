@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<!-- TODO: add ui for pause, modify last scored highlight -->
+<!-- TODO: modify last scored highlight -->
 
 <fx:root id="root" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" type="StackPane" xmlns="http://javafx.com/javafx/21.0.10" xmlns:fx="http://javafx.com/fxml/1">
         <Pane fx:id="gameSpace" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
@@ -26,9 +26,10 @@
          <BorderPane id="game-end-screen" fx:id="gameEndScreen" visible="false">
             <center>
                 <VBox alignment="CENTER" spacing="12.5" BorderPane.alignment="CENTER">
-                    <HBox alignment="CENTER" spacing="12.5">
-                        <Label fx:id="winnerLabel" text="[Player NAME]" />
-                        <Label styleClass="header-label" text="is A WINNER" />
+                    <HBox alignment="CENTER" spacing="9.375">
+                        <Label fx:id="winnerLabel" styleClass="highlighted-label" text="[Player NAME]" />
+                        <Label text="is a" />
+                        <Label text="WINNER" />
                     </HBox>
                     <Button id="restart-game-button" fx:id="restartGameButtonOnEnd" focusTraversable="false" mnemonicParsing="false" styleClass="image-button" />
                 </VBox>
@@ -37,8 +38,11 @@
         <BorderPane id="game-pause-screen" fx:id="gamePauseScreen" visible="false">
             <center>
                 <VBox alignment="CENTER" spacing="12.5" BorderPane.alignment="CENTER">
-                    <Label styleClass="header-label" text="Game is on pause" />
-                <Button id="restart-game-button" fx:id="restartGameButtonOnPause" focusTraversable="false" mnemonicParsing="false" styleClass="image-button" />
+                    <HBox alignment="CENTER" spacing="9.375">
+                        <Label text="Game is on" />
+                        <Label styleClass="highlighted-label" text="PAUSE" />
+                    </HBox>
+                <Button id="resume-game-button" fx:id="restartGameButtonOnPause" focusTraversable="false" mnemonicParsing="false" styleClass="image-button" />
                 </VBox>
             </center>
         </BorderPane>

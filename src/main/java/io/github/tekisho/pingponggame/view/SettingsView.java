@@ -1,18 +1,19 @@
 package io.github.tekisho.pingponggame.view;
 
 import io.github.tekisho.pingponggame.view.delegate.SettingsViewDelegate;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class SettingsView extends VBox implements Initializable {
+/**
+ * Represents settings view, which displays setting option & allows changing it.
+ */
+public class SettingsView extends VBox implements View<SettingsViewDelegate> {
     private SettingsViewDelegate delegate;
 
     @FXML
@@ -56,10 +57,6 @@ public class SettingsView extends VBox implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // ...
-    }
-
     public void setDelegate(SettingsViewDelegate delegate) {
         if (this.delegate != null) {
             throw new RuntimeException("Settings delegate already exist!");
@@ -69,8 +66,9 @@ public class SettingsView extends VBox implements Initializable {
         setupEventHandlers();
     }
 
+    @Override
     public void setupEventHandlers() {
-        confirmChangesButton.setOnMouseClicked(mouseEvent -> delegate.handleConfirmChangesButtonClick());
+        confirmChangesButton.setOnMouseClicked(mouseEvent -> delegate.handleApplySettingsChanges());
         delegate.handleGamePauseAndContinuation();
     }
 

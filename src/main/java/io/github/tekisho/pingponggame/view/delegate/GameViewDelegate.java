@@ -1,15 +1,35 @@
 package io.github.tekisho.pingponggame.view.delegate;
 
-public interface GameViewDelegate {
+public interface GameViewDelegate extends ViewDelegate {
+    /**
+     * Sets initial size of the view.
+     */
     void handleSetInitialSize();
 
-    void handleSceneResize(double w, double h);
+    /**
+     * Resizes all view components to their corresponding relative positions & updates game space size.
+     * @param w new view width
+     * @param h new view height
+     */
+    void handleViewResize(double w, double h);
 
+    /**
+     * Hiding corresponding UI, and restarts the game.
+     */
     void handleResetAndRestartGame();
 
+    /**
+     * Hiding corresponding UI, and resumes the game.
+     */
     void handleResumeGame();
 
-    void handleSettingsButtonClick();
+    /**
+     * Opens settings view.
+     */
+    void handleOpenSettingsRequest();
 
+    /**
+     * Configures game input handler & starts the game.
+     */
     void handleStartGame();
 }
