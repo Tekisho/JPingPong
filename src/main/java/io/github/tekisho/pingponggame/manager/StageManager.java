@@ -10,7 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Helper class. Manages all stages (primary, secondary).
+ * Helper class, that manages all stages (primary, secondary).
  */
 public class StageManager {
     private Stage primaryStage;

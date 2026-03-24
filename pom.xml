@@ -127,6 +127,7 @@
                         </tag>
                     </tags>
                     <show>private</show>
+<!--                    <additionalOptions>&#45;&#45;show-packages all</additionalOptions>-->
                     <outputDirectory>${project.apidocs.basedir}</outputDirectory>
                 </configuration>
             </plugin>
