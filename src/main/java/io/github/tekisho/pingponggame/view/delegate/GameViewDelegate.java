@@ -7,7 +7,7 @@ public interface GameViewDelegate extends ViewDelegate {
     void handleSetInitialSize();
 
     /**
-     * Resizes all view components to their corresponding relative positions & updates game space size.
+     * Resizes all view components to their corresponding relative positions and updates game space size.
      * @param w new view width
      * @param h new view height
      */
@@ -29,7 +29,7 @@ public interface GameViewDelegate extends ViewDelegate {
     void handleOpenSettingsRequest();
 
     /**
-     * Configures game input handler & starts the game.
+     * Configures game input handler and starts the game.
      */
     void handleStartGame();
 }

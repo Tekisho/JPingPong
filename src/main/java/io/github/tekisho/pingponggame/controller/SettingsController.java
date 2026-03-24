@@ -6,7 +6,7 @@ import io.github.tekisho.pingponggame.view.SettingsView;
 import io.github.tekisho.pingponggame.view.delegate.SettingsViewDelegate;
 
 /**
- * Represents settings controller, that handles user input & allows interaction with game model through settings view.
+ * Represents settings controller, that handles user input and allows interaction with game model through settings view.
  */
 public class SettingsController implements SettingsViewDelegate, Observer {
     private final SettingsView settingsView;

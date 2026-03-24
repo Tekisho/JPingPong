@@ -136,6 +136,14 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
         updatePosition(getX() + getDx(), getY() + getDy());
     }
 
+
+    public static final double DEFAULT_PADDING = 25;
+    public enum DefaultPosition {
+        LEFT,
+        RIGHT,
+        CENTER
+    }
+
     /**
      * Set position of the object to one of the default ones considering padding.
      * @param widthBoundary object container width
@@ -144,8 +152,8 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
      */
     public void resetPosition(double widthBoundary, double heightBoundary, double padding, DefaultPosition position) {
         switch (position) {
-            case DefaultPosition.LEFT -> updatePositionWithCentering(padding, heightBoundary/ 2);
-            case DefaultPosition.RIGHT -> updatePositionWithCentering(widthBoundary - padding, heightBoundary / 2);
+            case DefaultPosition.LEFT -> updatePositionWithCentering(padding + width / 2, heightBoundary / 2);
+            case DefaultPosition.RIGHT -> updatePositionWithCentering(widthBoundary - padding - width / 2, heightBoundary / 2);
             case DefaultPosition.CENTER -> updatePositionWithCentering(widthBoundary / 2, heightBoundary / 2);
         }
     }
@@ -156,16 +164,10 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
     public void resetPosition(double widthBoundary, double heightBoundary, DefaultPosition position) {
         resetPosition(widthBoundary, heightBoundary, DEFAULT_PADDING, position);
     }
-    public static final double DEFAULT_PADDING = 50;
-    public enum DefaultPosition {
-        LEFT,
-        RIGHT,
-        CENTER
-    }
 
     /**
      * Updates size of the object, re-centering it based on the original position (i.e., takes into account offset created by difference with the new
-     * width & height).
+     * width and height).
      * @param width new width of the object
      * @param height new height of the object
      * @see #updatePositionWithCentering(double, double)
@@ -182,7 +184,7 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
     }
 
     /**
-     * Same as {@link #updateSize(double, double)}, but use radius instead of width & height.
+     * Same as {@link #updateSize(double, double)}, but use radius instead of width and height.
      * @param radius radius of the object
      */
     public void updateSize(double radius) {
@@ -207,7 +209,7 @@ public abstract sealed class GameObjectModel permits RacketModel, BallModel {
     }
 
     /**
-     * STUB: "resolves" overlapping (aka stuck) collision between collidingObject & collisionObject
+     * STUB: "resolves" overlapping (aka stuck) collision between collidingObject and collisionObject
      * @param collidingObject object to collide with
      * @param collisionObject initial object (which have a collision)
      */

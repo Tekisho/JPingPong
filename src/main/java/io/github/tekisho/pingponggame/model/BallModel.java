@@ -2,7 +2,7 @@ package io.github.tekisho.pingponggame.model;
 
 // TODO: Consider refactor of bouncing methods; they may refer to any game object, not only ball
 /**
- * Represents Ball, concrete {@link GameObjectModel}. Include physics logic (i.e., bouncing & speed increase after it).
+ * Represents Ball, concrete {@link GameObjectModel}. Include physics logic (i.e., bouncing and speed increase after it).
  */
 public final class BallModel extends GameObjectModel {
     private static final double DEFAULT_RADIUS = 20;
@@ -49,7 +49,7 @@ public final class BallModel extends GameObjectModel {
     }
 
     /**
-     * Moves ball, considering bouncing from borders & colliding objects.
+     * Moves ball, considering bouncing from borders and colliding objects.
      * @param heightBoundary height of the object container
      * @param collidingObjects objects to collide with
      * @see #move()
@@ -73,7 +73,7 @@ public final class BallModel extends GameObjectModel {
 
     // TODO: Modify to properly calculate bouncing angle and velocity
     /**
-     * Calculates OX & OY velocity if object collides with colliding object, otherwise do nothing.
+     * Calculates OX and OY velocity if object collides with colliding object, otherwise do nothing.
      * @param collidingObject object to collide with
      */
     private void processBouncingFromRacket(GameObjectModel collidingObject) {

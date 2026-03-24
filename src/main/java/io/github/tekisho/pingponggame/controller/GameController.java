@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 // TODO: Fix bug when min the game window - it accelerates (since not cons. delta time). 1) consider delta-time, 2) stop game when window is minimized
 /**
- * Represents game controller, that handles user input & allows interaction with game model through game view.
+ * Represents game controller, that handles user input and allows interaction with game model through game view.
  */
 public class GameController implements GameViewDelegate, Observer {
     private final GameModel gameModel;

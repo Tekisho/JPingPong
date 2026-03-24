@@ -72,7 +72,7 @@ public class GameModel implements Subject {
         OVER,
 
         /**
-         * Means that the game is restarting, therefore it will start game loop & change state to {@code RUNNING} afterward.
+         * Means that the game is restarting, therefore it will start game loop and change state to {@code RUNNING} afterward.
          */
         RESTARTING
     }

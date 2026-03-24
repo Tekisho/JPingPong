@@ -71,7 +71,7 @@ public class StageManager {
 
     /**
      * Setups primary stage by calling {@link #setupStage(Stage, Parent, String, String)}. Always shown after setup,
-     * minimum width & height will be equal to the initial size of the stage.
+     * minimum width and height will be equal to the initial size of the stage.
      * @param initialView initial view being set to the primary stage
      */
     private void setupPrimaryStage(Parent initialView) {

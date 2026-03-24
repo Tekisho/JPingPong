@@ -5,6 +5,12 @@ module io.github.tekisho.pingponggame {
     requires com.pixelduke.fxthemes;
 
     opens io.github.tekisho.pingponggame.view to javafx.fxml;
-    opens io.github.tekisho.pingponggame to javafx.fxml;
+
     exports io.github.tekisho.pingponggame;
+    exports io.github.tekisho.pingponggame.controller;
+    exports io.github.tekisho.pingponggame.manager;
+    exports io.github.tekisho.pingponggame.model;
+    exports io.github.tekisho.pingponggame.view;
+    exports io.github.tekisho.pingponggame.view.delegate;
+    exports io.github.tekisho.pingponggame.view.component;
 }

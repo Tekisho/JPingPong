@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 /**
- * Represents settings view, which displays setting option & allows changing it.
+ * Represents settings view, which displays setting option and allows changing it.
  */
 public class SettingsView extends VBox implements View<SettingsViewDelegate> {
     private SettingsViewDelegate delegate;

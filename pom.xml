@@ -89,8 +89,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>io.github.tekisho.pingponggame/io.github.tekisho.pingponggame.Main
-                            </mainClass>
+                            <mainClass>io.github.tekisho.pingponggame/io.github.tekisho.pingponggame.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -115,6 +114,19 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${javadoc.version}</version>
                 <configuration>
+                    <tags>
+                        <tag>
+                            <name>implNote</name>
+                            <placement>a</placement>
+                            <head>Implementation Note:</head>
+                        </tag>
+                        <tag>
+                            <name>apiNote</name>
+                            <placement>a</placement>
+                            <head>API Note:</head>
+                        </tag>
+                    </tags>
+                    <show>private</show>
                     <outputDirectory>${project.apidocs.basedir}</outputDirectory>
                 </configuration>
             </plugin>
