@@ -29,7 +29,7 @@ then _clone the repository using **[git](https://git-scm.com/install/windows)**_
 git clone https://github.com/Tekisho/JPingPong
 ```
 
-**Finally**, to _download all dependencies_ required & build the project _use maven wrapper script_:
+**Finally**, to _resolve and download all dependencies_ required & build the project _use maven wrapper script_:
 ```
 ./mvnw clean install
 ```

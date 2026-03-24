@@ -12,7 +12,7 @@ public class SettingsController implements SettingsViewDelegate, Observer {
     private final SettingsView settingsView;
     private final GameModel gameModel;
 
-    public SettingsController(final SettingsView settingsView, final GameModel gameModel) {
+    public SettingsController(SettingsView settingsView, GameModel gameModel) {
         this.settingsView = settingsView;
         this.gameModel = gameModel;
 

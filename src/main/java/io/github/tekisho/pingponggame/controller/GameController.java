@@ -22,7 +22,7 @@ public class GameController implements GameViewDelegate, Observer {
 
     private final ScheduledExecutorService scheduler;
 
-    public GameController(final GameView gameView, final GameModel gameModel) {
+    public GameController(GameView gameView, GameModel gameModel) {
         this.gameModel = gameModel;
         this.gameView = gameView;
 

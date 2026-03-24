@@ -2,6 +2,7 @@ package io.github.tekisho.pingponggame.manager;
 
 import com.pixelduke.window.ThemeWindowManager;
 import com.pixelduke.window.ThemeWindowManagerFactory;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
