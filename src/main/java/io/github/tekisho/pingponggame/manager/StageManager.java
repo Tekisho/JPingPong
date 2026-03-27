@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 /**
  * Helper class, that manages all stages (primary, secondary).
  */
-public class StageManager {
+public final class StageManager {
     private Stage primaryStage;
     private Stage secondaryStage;
 

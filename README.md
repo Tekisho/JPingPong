@@ -3,6 +3,18 @@
     JPingPong
 </h1>
 
+<details>
+<summary>Table of contents (Click to show)</summary>
+
+- [Requirements](#requirements-from-or-higher)
+- [Build & Run](#github-extra-pins)
+- [Controls](#controls)
+- [Features](#features)
+- [Roadmap](#roadmap-in-progress-o)
+- [Contribtuing](#contributing)
+- [License](#license)
+</details>
+
 **JPingPong** (aka Java Ping-Pong) is a more modern “replica” of the famous game
 [Pong developed by Atari in 1972](https://en.wikipedia.org/wiki/Pong) on Java using JavaFX, developed as part of a student project.
 
@@ -68,6 +80,9 @@ and to **run the game** use:
   * [ ] overlapping (aka stuck) collisions resolving
   * [ ] velocity (vectors related)
   * [ ] bouncing (angles related)
+* [ ] Session Synchronization (auto & manual)
+  * [ ] save
+  * [ ] load
 * [ ] Settings
   * [X] basics
   * [ ] reset to defaults
