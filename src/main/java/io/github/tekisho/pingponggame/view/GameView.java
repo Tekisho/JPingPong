@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +32,8 @@ public class GameView extends StackPane implements View<GameViewDelegate>, Initi
     private Label gameScoreLabel;
     @FXML
     private Button settingsButton;
+    @FXML
+    private Button saveLoadButton;
 
     @FXML
     private Pane gameSpace;
@@ -97,6 +100,8 @@ public class GameView extends StackPane implements View<GameViewDelegate>, Initi
         gameSpace.heightProperty().addListener((observable, oldValue, newValue) -> delegate.handleViewResize(getWidth(), newValue.doubleValue()));
 
         settingsButton.setOnMouseClicked(mouseEvent -> delegate.handleOpenSettingsRequest());
+        saveLoadButton.setOnMouseClicked(mouseEvent -> delegate.handleOpenSaveLoadRequest());
+
         restartGameButtonOnEnd.setOnMouseClicked(mouseEvent -> delegate.handleResetAndRestartGame());
         restartGameButtonOnPause.setOnMouseClicked(mouseEvent -> delegate.handleResumeGame());
 

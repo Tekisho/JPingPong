@@ -49,6 +49,16 @@
     -fx-effect: dropshadow(gaussian, #000000, 7, 0, 0, 0);
 }
 
+#save-load-button{
+    -fx-graphic: url("../imgs/save-icon-24.png");
+    -fx-effect: dropshadow(gaussian, #FFFFFF3F, 10, 0, 0, 0);
+    -fx-opacity: 0.95;
+}
+#save-load-button:hover {
+    -fx-graphic: url("../imgs/save-icon-hover-24.png");
+    -fx-effect: dropshadow(gaussian, #000000, 7, 0, 0, 0);
+}
+
 #game-interface {
     -fx-padding: 25px;
 }
@@ -147,5 +157,22 @@
 }
 #resume-game-button:hover {
     -fx-graphic: url("../imgs/play-icon-hover-24.png");
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
+}
+
+/* SAVE-LOAD SCREEN */
+#save-load-screen {
+    -fx-background-color: #131313;
+    -fx-effect: innershadow(gaussian, #000000, 15, 0, 0, 0);
+    -fx-padding: 25px;
+}
+
+#save-load-screen .button {
+    -fx-background-color: #FFFFFFF2;
+    -fx-effect: dropshadow(gaussian, #FFFFFF3F, 5, 0, 0, 0);
+    -fx-padding: 5px 25px;
+}
+#save-load-screen .button:hover {
+    -fx-background-color: #FFFFFFBF;
     -fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);
 }

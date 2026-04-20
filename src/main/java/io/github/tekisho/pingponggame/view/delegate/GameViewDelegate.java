@@ -29,6 +29,11 @@ public interface GameViewDelegate extends ViewDelegate {
     void handleOpenSettingsRequest();
 
     /**
+     * Opens save/load view.
+     */
+    void handleOpenSaveLoadRequest();
+
+    /**
      * Configures game input handler and starts the game.
      */
     void handleStartGame();

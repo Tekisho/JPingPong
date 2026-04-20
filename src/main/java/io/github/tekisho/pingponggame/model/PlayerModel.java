@@ -1,5 +1,7 @@
 package io.github.tekisho.pingponggame.model;
 
+import io.github.tekisho.pingponggame.model.dto.PlayerDTO;
+
 /**
  * Represents player model.
  * @implNote Player must always have the racket.
@@ -10,12 +12,16 @@ public class PlayerModel {
 
     private final RacketModel racketModel;
 
-    public PlayerModel(String name) {
-        this(name, new RacketModel());
-    }
     public PlayerModel(String name, RacketModel racketModel) {
         this.name = name;
         this.racketModel = racketModel;
+    }
+    public PlayerModel(String name) {
+        this(name, new RacketModel());
+    }
+    public PlayerModel(PlayerDTO playerDTO) {
+        this(playerDTO.name());
+        this.score = playerDTO.score();
     }
 
     public String getName() {

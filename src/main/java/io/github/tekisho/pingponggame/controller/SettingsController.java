@@ -4,6 +4,7 @@ import io.github.tekisho.pingponggame.model.GameModel;
 import io.github.tekisho.pingponggame.model.Observer;
 import io.github.tekisho.pingponggame.view.SettingsView;
 import io.github.tekisho.pingponggame.view.delegate.SettingsViewDelegate;
+import javafx.stage.WindowEvent;
 
 /**
  * Represents settings controller, that handles user input and allows interaction with game model through settings view.
@@ -50,14 +51,12 @@ public class SettingsController implements SettingsViewDelegate, Observer {
 
     @Override
     public void handleGamePauseAndContinuation() {
+        // TODO: Refactor, pause logic should be either specific to settings view or general for each related view.
         settingsView.sceneProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != newValue) {
+            if (oldValue != newValue && newValue != null) {
                 newValue.windowProperty().addListener((observable1, oldValue1, newValue1) -> {
                     newValue1.setOnShowing((windowEvent -> gameModel.switchGameState(GameModel.GameState.PAUSED)));
-                    newValue1.setOnCloseRequest((windowEvent -> {
-                        gameModel.setOpenSettingsRequest(false);
-                        gameModel.switchGameState(GameModel.GameState.RUNNING);
-                    }));
+                    newValue1.setOnCloseRequest((windowEvent -> gameModel.setOpenSecondaryRequest(false)));
                 });
             }
         });

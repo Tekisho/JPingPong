@@ -10,7 +10,7 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<fx:root id="settings-screen" prefHeight="550.0" prefWidth="800.0" spacing="50.0" stylesheets="@../css/styles.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/21.0.10" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="settings-screen" prefHeight="550.0" prefWidth="800.0" spacing="50.0" stylesheets="@../css/styles.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <VBox spacing="12.5">
       <Label alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" styleClass="header-label" text="PLAYERS AND SCORE" />
       <VBox spacing="25.0">

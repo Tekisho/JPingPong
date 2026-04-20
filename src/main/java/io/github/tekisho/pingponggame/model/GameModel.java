@@ -1,13 +1,17 @@
 package io.github.tekisho.pingponggame.model;
 
+import io.github.tekisho.pingponggame.model.dto.PlayerDTO;
+import io.github.tekisho.pingponggame.service.SyncService;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
+
 
 /**
  * Represents model of game itself, contains other corresponding models (player, racket, ball), and relevant logic.
@@ -26,6 +30,8 @@ public class GameModel implements Subject {
     private static final double BOT_RACKET_VELOCITY_MULTIPLIER = 0.5;
 
     private final Set<Observer> observers = new HashSet<>();
+
+    private SyncService syncService;
 
     private AnimationTimer gameLoop;
     private GameInputHandler gameInputHandler;
@@ -78,15 +84,17 @@ public class GameModel implements Subject {
     }
     private GameState currentState;
 
-    private final PlayerModel playerOneModel;
-    private final PlayerModel playerTwoModel;
+    private PlayerModel playerOneModel;
+    private PlayerModel playerTwoModel;
     private final BallModel ballModel;
 
     private PlayerModel winnerPlayer;
     private PlayerModel lastScoredPlayer; // TODO: Consider refactor, lastScoredPlayer should be reseted only during RESTARTING
 
     // TODO: Consider refactor. It would be more appropriate to consider removing "openSettingRequest" from the model, since its not related to the state of the game
+    private boolean openSecondaryRequest;
     private boolean openSettingsRequest;
+    private boolean openSaveLoadRequest;
 
     public GameModel() {
         playerOneModel = new PlayerModel("Player 1");
@@ -95,6 +103,10 @@ public class GameModel implements Subject {
 
         currentState = GameState.AWAITING_STARTUP;
         createGameLoop();
+    }
+
+    public void setSyncService(SyncService syncService) {
+        this.syncService = syncService;
     }
 
     @Override
@@ -135,12 +147,101 @@ public class GameModel implements Subject {
         return ballModel;
     }
 
+    public boolean getOpenSecondaryRequest() {
+        return openSecondaryRequest;
+    }
+    public void setOpenSecondaryRequest(boolean requestStatus) {
+        switchGameState(requestStatus ? GameState.PAUSED : GameState.RUNNING);
+        this.openSecondaryRequest = requestStatus;
+
+        if (!requestStatus) {
+            this.openSettingsRequest  = false;
+            this.openSaveLoadRequest  = false;
+        }
+    }
+
     public boolean getOpenSettingsRequest() {
         return openSettingsRequest;
     }
-    public void setOpenSettingsRequest(boolean openSettingsRequest) {
-        switchGameState(openSettingsRequest ? GameState.PAUSED : GameState.RUNNING);
-        this.openSettingsRequest = openSettingsRequest;
+    public void setOpenSettingsRequest(boolean requestStatus) {
+        this.openSecondaryRequest = requestStatus;
+        this.openSettingsRequest  = requestStatus;
+    }
+
+
+    public boolean getOpenSaveLoadRequest() {
+        return openSaveLoadRequest;
+    }
+    public void setOpenSaveLoadsRequest(boolean requestStatus) {
+        this.openSecondaryRequest = requestStatus;
+        this.openSaveLoadRequest  = requestStatus;
+    }
+
+    public static class Builder {
+        private double w;
+        private double h;
+
+        private int gameEndScore;
+
+        private PlayerModel playerOneModel;
+        private PlayerModel playerTwoModel;
+
+        public Builder size(double w, double h) {
+            this.w = w;
+            this.h = h;
+            return this;
+        }
+
+        public Builder scoreLimit(int gameEndScore) {
+            this.gameEndScore = gameEndScore;
+            return this;
+        }
+
+        public Builder playerOne(PlayerDTO playerDTO) {
+            this.playerOneModel = new PlayerModel(playerDTO);
+            return this;
+        }
+
+        public Builder playerTwo(PlayerDTO playerDTO) {
+            this.playerTwoModel = new PlayerModel(playerDTO);
+            return this;
+        }
+
+        public GameModel build() {
+            GameModel gameModel = new GameModel();
+
+            if (this.w != 0 && this.h != 0) {
+                gameModel.gameSpaceWidth = this.w;
+                gameModel.gameSpaceHeight = this.h;
+            }
+
+            if (this.gameEndScore != 0)
+                gameModel.gameEndScore = this.gameEndScore;
+
+            if (this.playerOneModel != null)
+                gameModel.playerOneModel = this.playerOneModel;
+
+            if (this.playerTwoModel != null)
+                gameModel.playerTwoModel = this.playerTwoModel;
+
+            return gameModel;
+        }
+    }
+
+    /**
+     * Restores previous state using {@code session } parameter.
+     * @param session game model to restore from
+     */
+    public void restoreFrom(GameModel session) {
+        this.gameSpaceWidth = session.gameSpaceWidth;
+        this.gameSpaceHeight = session.gameSpaceHeight;
+        this.gameEndScore = session.gameEndScore;
+
+        this.playerOneModel = session.playerOneModel;
+        this.playerTwoModel = session.playerTwoModel;
+
+        resetGameObjectsPositions();
+        notifyAllObservers();
     }
 
     /**
@@ -263,6 +364,24 @@ public class GameModel implements Subject {
             gameInputHandler.removeActiveKey(KeyCode.R);
             switchGameState(GameState.RESTARTING);
         }
+
+        if (activeKeys.contains(KeyCode.CONTROL) && activeKeys.contains(KeyCode.M)) {
+            gameInputHandler.removeActiveKey(KeyCode.CONTROL);
+            gameInputHandler.removeActiveKey(KeyCode.M);
+            setOpenSaveLoadsRequest(true);
+        }
+
+        if (activeKeys.contains(KeyCode.CONTROL) && activeKeys.contains(KeyCode.S)) {
+            gameInputHandler.removeActiveKey(KeyCode.CONTROL);
+            gameInputHandler.removeActiveKey(KeyCode.S);
+            syncService.saveSessionState();
+        }
+
+        if (activeKeys.contains(KeyCode.CONTROL) && activeKeys.contains(KeyCode.L)) {
+            gameInputHandler.removeActiveKey(KeyCode.CONTROL);
+            gameInputHandler.removeActiveKey(KeyCode.L);
+            restoreFrom(syncService.restoreLastSessionState().get());
+        }
     }
 
     /**
@@ -272,8 +391,8 @@ public class GameModel implements Subject {
     private void updatePlayerOneRacket(Set<KeyCode> activeKeys) {
         RacketModel racket = playerOneModel.getRacketModel();
 
-        boolean isMovingUp = activeKeys.contains(KeyCode.UP) || activeKeys.contains(KeyCode.W);
-        boolean isMovingDown = activeKeys.contains(KeyCode.DOWN) || activeKeys.contains(KeyCode.S);
+        boolean isMovingUp = !activeKeys.contains(KeyCode.CONTROL) && (activeKeys.contains(KeyCode.UP) || activeKeys.contains(KeyCode.W));
+        boolean isMovingDown = !activeKeys.contains(KeyCode.CONTROL) && (activeKeys.contains(KeyCode.DOWN) || activeKeys.contains(KeyCode.S));
 
         double velocity = racket.getVelocity();
         racket.setDy(0);

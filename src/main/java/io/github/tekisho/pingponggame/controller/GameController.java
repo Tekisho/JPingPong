@@ -19,6 +19,7 @@ public class GameController implements GameViewDelegate, Observer {
     private final GameView gameView;
 
     private Runnable openSettingsRequest;
+    private Runnable openSaveLoadRequest;
 
     private final ScheduledExecutorService scheduler;
 
@@ -36,6 +37,9 @@ public class GameController implements GameViewDelegate, Observer {
 
     public void setOpenSettingsRequest(Runnable runnable) {
         openSettingsRequest = runnable;
+    }
+    public void setOpenSaveLoadRequest(Runnable runnable) {
+        openSaveLoadRequest = runnable;
     }
 
     @Override
@@ -109,6 +113,11 @@ public class GameController implements GameViewDelegate, Observer {
     }
 
     @Override
+    public void handleOpenSaveLoadRequest() {
+        openSaveLoadRequest.run();
+    }
+
+    @Override
     public void update() {
         updateMiscellaneous();
         updatePlayersAndScore();
@@ -119,9 +128,11 @@ public class GameController implements GameViewDelegate, Observer {
     private void updateMiscellaneous() {
         gameView.setGamePauseScreenVisibility((gameModel.getCurrentState() == GameModel.GameState.PAUSED));
 
-        if (gameModel.getOpenSettingsRequest()) {
-            handleOpenSettingsRequest();
-        }
+        if (gameModel.getOpenSettingsRequest() && gameModel.getOpenSecondaryRequest()) handleOpenSettingsRequest();
+        if (gameModel.getOpenSaveLoadRequest() && gameModel.getOpenSecondaryRequest()) handleOpenSaveLoadRequest();
+
+        gameView.setPrefWidth(gameModel.getGameSpaceWidth());
+        gameView.setPrefHeight(gameModel.getGameSpaceHeight());
     }
 
     private void updatePlayersAndScore() {

@@ -11,6 +11,11 @@ public class Main extends Application {
         ApplicationController.getInstance().initApplication(primaryStage);
     }
 
+    @Override
+    public void stop() {
+        ApplicationController.getInstance().saveGameSessionState();
+    }
+
     public static void main(String[] args) {
         launch();
     }

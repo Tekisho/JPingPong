@@ -25,11 +25,12 @@ At present, _the game is in active development_ and does not meet ALL of its fun
 ## Requirements (from or higher)
 - **[JDK21](https://adoptium.net/en-GB/temurin/releases?version=21&os=any&arch=any)**
 - JavaFX21 (i.e., compatible with JDK)
+- SQLite 3
 - Maven 3.9
 - JUnit 5.10 (Jupiter)
 
 > [!NOTE]
-> Only JDK is required, every other dependencies could be handled using maven wrapper.
+> Only JDK is mandatory, every other dependencies could be resolved using maven wrapper (`.mvnw`).
 
 ## Build & Run
 **First**, _navigate to the desired folder through the terminal_,
@@ -62,6 +63,8 @@ and to **run the game** use:
 * `R` to trigger "fast restart" of the game
 * `P` to activate pause
 * `ESC` to show settings window, automatically puts game on pause
+* `CTRL` + `S`/`L` to trigger "fast save / load"
+* `CTRL` + `M` to open (simplified) session management menu (in progress)
 
 ## Features
 * Adaptive UI, Dark theme
@@ -72,6 +75,7 @@ and to **run the game** use:
 * Ball speed-up (after each 2nd racket bounce)
 * Game settings
 * Pause, Fast Restart, Game Over
+* Game save system
 
 ## Roadmap (in progress :O)
 * [ ] Delta time
@@ -81,8 +85,10 @@ and to **run the game** use:
   * [ ] velocity (vectors related)
   * [ ] bouncing (angles related)
 * [ ] Session Synchronization (auto & manual)
-  * [ ] save
-  * [ ] load
+  * [X] save (basic + autosave on close)
+  * [X] load (basic)
+  * [ ] save (full)
+  * [ ] load (full)
 * [ ] Settings
   * [X] basics
   * [ ] reset to defaults

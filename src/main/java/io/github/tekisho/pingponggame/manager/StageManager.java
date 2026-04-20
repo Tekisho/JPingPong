@@ -6,6 +6,7 @@ import com.pixelduke.window.ThemeWindowManagerFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -96,6 +97,56 @@ public final class StageManager {
         secondaryStage.initModality(Modality.APPLICATION_MODAL);
 
         secondaryStage.setResizable(false);
+    }
+
+    /**
+     * Represents all existing stage types.
+     */
+    public enum StageType {
+        PRIMARY,
+        SECONDARY
+    }
+
+    /**
+     * Sets new root to stage of type {@link StageType}.
+     * @param stageType type of the stage
+     * @param root new scene
+     */
+    public void setStageRoot(StageType stageType, Parent root) {
+        switch (stageType) {
+            case PRIMARY -> primaryStage.getScene().setRoot(root);
+            case SECONDARY -> secondaryStage.getScene().setRoot(root);
+        }
+    }
+
+    /**
+     * Sets title to stage of type {@link StageType}.
+     * @param stageType type of the stage
+     * @param title stage name
+     */
+    public void setStageTitle(StageType stageType, String title) {
+        switch (stageType) {
+            case PRIMARY -> primaryStage.setTitle(title);
+            case SECONDARY -> secondaryStage.setTitle(title);
+        }
+    }
+
+    /**
+     * Sets icon to the stage of type {@link StageType}
+     * @param stageType type of the stage
+     * @param iconPath path to icon
+     */
+    public void setStageIcon(StageType stageType, String iconPath) {
+        switch (stageType) {
+            case PRIMARY -> {
+                primaryStage.getIcons().clear();
+                primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));
+            }
+            case SECONDARY -> {
+                secondaryStage.getIcons().clear();
+                secondaryStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));
+            }
+        }
     }
 
     public void showSecondaryStage() {
