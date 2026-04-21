@@ -94,11 +94,6 @@ public final class ApplicationController {
         routeManager.route(RouteManager.FromStage.SECONDARY, ViewManager.ViewType.SAVE_LOAD);
     }
 
-    public void loadGameSessionState() {
-        Optional<GameModel> lastSession = syncService.restoreLastSessionState();
-        lastSession.ifPresent(model -> gameModel = model);
-    }
-
     public void saveGameSessionState() {
         syncService.saveSessionState();
     }

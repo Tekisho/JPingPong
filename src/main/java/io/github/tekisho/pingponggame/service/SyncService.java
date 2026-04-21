@@ -26,10 +26,13 @@ public class SyncService {
     public Optional<GameModel> restoreLastSessionState() {
        Optional<GameDTO> restoredDTO = gameDAO.getLast();
 
-        return restoredDTO.map(gameDTO -> new GameModel.Builder()
-                .scoreLimit(gameDTO.gameEndScore())
-                .playerOne(gameDTO.playerOneDTO())
-                .playerTwo(gameDTO.playerTwoDTO())
-                .build());
+       if (restoredDTO.isPresent()) {
+           return restoredDTO.map(gameDTO -> new GameModel.Builder()
+                   .scoreLimit(gameDTO.gameEndScore())
+                   .playerOne(gameDTO.playerOneDTO())
+                   .playerTwo(gameDTO.playerTwoDTO())
+                   .build());
+       }
+       return Optional.empty();
     }
 }

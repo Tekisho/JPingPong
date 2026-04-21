@@ -372,15 +372,13 @@ public class GameModel implements Subject {
         }
 
         if (activeKeys.contains(KeyCode.CONTROL) && activeKeys.contains(KeyCode.S)) {
-            gameInputHandler.removeActiveKey(KeyCode.CONTROL);
             gameInputHandler.removeActiveKey(KeyCode.S);
             syncService.saveSessionState();
         }
 
         if (activeKeys.contains(KeyCode.CONTROL) && activeKeys.contains(KeyCode.L)) {
-            gameInputHandler.removeActiveKey(KeyCode.CONTROL);
             gameInputHandler.removeActiveKey(KeyCode.L);
-            restoreFrom(syncService.restoreLastSessionState().get());
+            syncService.restoreLastSessionState().ifPresent(this::restoreFrom);
         }
     }
 

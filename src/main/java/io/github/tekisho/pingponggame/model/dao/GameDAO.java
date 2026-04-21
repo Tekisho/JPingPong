@@ -37,6 +37,7 @@ public class GameDAO implements Dao<GameDTO> {
                             new PlayerDTO(resultSet.getString(4), resultSet.getInt(5)),
                             new PlayerDTO(resultSet.getString(6), resultSet.getInt(7))
                     ));
+                return Optional.empty();
             }
         } catch (SQLException e) {
             e.printStackTrace();
