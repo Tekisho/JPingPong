@@ -1,5 +1,5 @@
 <h1>
-    <img src="src/main/resources/io/github/tekisho/pingponggame/imgs/app-icon-48.png" width="32 px" alt="app icon">
+    <img src="src/main/resources/io/github/tekisho/pingponggame/imgs/app-icon-48.png" width="32" alt="app icon">
     JPingPong
 </h1>
 

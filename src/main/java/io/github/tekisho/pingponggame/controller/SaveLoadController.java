@@ -28,6 +28,6 @@ public class SaveLoadController implements SaveLoadDelegate {
 
     @Override
     public void handleLoadLast() {
-        gameModel.restoreFrom(syncService.restoreLastSessionState().get());
+        syncService.restoreLastSessionState().ifPresent(gameModel::restoreFrom);
     }
 }
