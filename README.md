@@ -7,11 +7,11 @@
 <summary>Table of contents (Click to show)</summary>
 
 - [Requirements](#requirements-from-or-higher)
-- [Build & Run](#github-extra-pins)
+- [Build & Run](#build--run)
 - [Controls](#controls)
 - [Features](#features)
 - [Roadmap](#roadmap-in-progress-o)
-- [Contribtuing](#contributing)
+- [Contributing](#contributing)
 - [License](#license)
 </details>
 
@@ -20,7 +20,10 @@
 
 ![Main screen of the game](docs/assets/images/game_main_screenshot.png)
 
-At present, _the game is in active development_ and does not meet ALL of its functional requirements to be released (but **it's already playable :O**).
+At present, _the game is in active development_ and does not meet ALL of its functional requirements to be released (but **it's already playable O:**).
+
+> [!NOTE]
+> If you would like to find out more about the **architecture of the project**, please take a look at [architecture.md](docs/architecture.md) >:3.
 
 ## Requirements (from or higher)
 - **[JDK21](https://adoptium.net/en-GB/temurin/releases?version=21&os=any&arch=any)**

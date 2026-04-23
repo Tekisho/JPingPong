@@ -19,10 +19,10 @@ public final class ViewManager {
         SAVE_LOAD
     }
 
-    public void registerView(ViewType sceneType, View<?> view) {
-        views.put(sceneType, view);
+    public void registerView(ViewType viewType, View<?> view) {
+        views.put(viewType, view);
     }
-    public View<?> getView(ViewType sceneType) {
-        return views.get(sceneType);
+    public View<?> getView(ViewType viewType) {
+        return views.get(viewType);
     }
 }
